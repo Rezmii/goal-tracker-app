@@ -35,11 +35,12 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Appbar.Header>
+        <Appbar.Header style={styles.header}>
           <Appbar.Content title="Goal Tracker" />
         </Appbar.Header>
         <Tab.Navigator
           screenOptions={({ route }) => ({
+            headerShown: false,
             tabBarIcon: ({ color, size }) => {
               let iconName;
               if (route.name === "Home") {
@@ -51,12 +52,10 @@ export default function App() {
               }
               return <Ionicons name={iconName} size={size} color={color} />;
             },
-            headerShown: false,
+            tabBarStyle: { backgroundColor: "#a91d3a" },
+            tabBarActiveTintColor: "white",
+            tabBarInactiveTintColor: "#151515",
           })}
-          tabBarOptions={{
-            activeTintColor: "tomato",
-            inactiveTintColor: "gray",
-          }}
         >
           <Tab.Screen name="Home" component={HomeScreen} />
           <Tab.Screen name="Goals" component={GoalsScreen} />
@@ -72,10 +71,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#151515",
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: "#eeeeee",
+  },
+  header: {
+    backgroundColor: "#a91d3a",
   },
 });
