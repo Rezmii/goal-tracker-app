@@ -2,32 +2,12 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Provider as PaperProvider, Appbar } from "react-native-paper";
-import { Text, View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ekran Główny</Text>
-    </View>
-  );
-}
-
-function GoalsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Twoje Cele</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ustawienia</Text>
-    </View>
-  );
-}
+import SettingsScreen from "./screens/SettingsScreen";
+import GoalsScreen from "./screens/GoalsScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 const Tab = createBottomTabNavigator();
 
