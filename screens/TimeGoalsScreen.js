@@ -1,86 +1,82 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import TimeGoalCard from "../components/TimeGoalCard";
-import TimeGoal from "../models/TimeGoal";
+import AddTimeGoalForm from "../components/AddTimeGoalForm";
+import { TimeGoalsContext } from "../context/TimeGoalContext";
+import { useContext, useState } from "react";
 
 const TimeGoalsScreen = ({ navigation }) => {
-  // Tworzymy cele z przypisanym timePeriod
-  const goals = [
-    new TimeGoal(
-      "Ukończyć prezentację",
-      "Prezentacja na piątek",
-      "2024-09-29",
-      50,
-      "ten tydzień"
-    ),
-    new TimeGoal(
-      "Przeczytać książkę",
-      "50 stron książki",
-      "2024-09-25",
-      20,
-      "ten tydzień"
-    ),
-    new TimeGoal(
-      "Zacząć kurs online",
-      "Kurs programowania",
-      "2024-10-15",
-      0,
-      "ten miesiąc"
-    ),
-    new TimeGoal(
-      "Zaoszczędzić 1000 PLN",
-      "Oszczędności na lokacie",
-      "2024-12-31",
-      10,
-      "3 miesiące"
-    ),
-  ];
-
-  // Filtrowanie celów według timePeriod
-  const filterGoalsByTimePeriod = (timePeriod) => {
-    return goals.filter((goal) => goal.timePeriod === timePeriod);
-  };
+  const { goals } = useContext(TimeGoalsContext);
+  const [showAddGoalForm, setShowAddGoalForm] = useState(false);
 
   const handleGoalPress = (goal) => {
     navigation.navigate("GoalDetails", { goal });
   };
 
-  return (
-    <View style={styles.container}>
-      <TimeGoalCard
-        title="Ten tydzień:"
-        goals={filterGoalsByTimePeriod("ten tydzień")}
-        onGoalPress={handleGoalPress}
-      />
-      <TimeGoalCard
-        title="Ten miesiąc:"
-        goals={filterGoalsByTimePeriod("ten miesiąc")}
-        onGoalPress={handleGoalPress}
-      />
-      <TimeGoalCard
-        title="3 miesiące:"
-        goals={filterGoalsByTimePeriod("3 miesiące")}
-        onGoalPress={handleGoalPress}
-      />
+  const filterGoalsByTimePeriod = (timePeriod) => {
+    return goals.filter((goal) => goal.timePeriod === timePeriod);
+  };
 
-      <View style={styles.buttonContainer}>
-        <Button mode="contained" style={styles.button} onPress={() => {}}>
-          Rok
-        </Button>
-        <Button mode="contained" style={styles.button} onPress={() => {}}>
-          3 Lata
-        </Button>
+  return (
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.container}>
+        {showAddGoalForm ? (
+          <AddTimeGoalForm
+            onAddGoal={() => {
+              setShowAddGoalForm(false);
+            }}
+          />
+        ) : (
+          <Button
+            mode="contained"
+            style={styles.addButton}
+            onPress={() => setShowAddGoalForm(true)}
+          >
+            Dodaj Nowy Cel
+          </Button>
+        )}
+
+        <TimeGoalCard
+          title="Ten tydzień:"
+          goals={filterGoalsByTimePeriod("ten tydzień")}
+          onGoalPress={handleGoalPress}
+        />
+        <TimeGoalCard
+          title="Ten miesiąc:"
+          goals={filterGoalsByTimePeriod("ten miesiąc")}
+          onGoalPress={handleGoalPress}
+        />
+        <TimeGoalCard
+          title="3 miesiące:"
+          goals={filterGoalsByTimePeriod("3 miesiące")}
+          onGoalPress={handleGoalPress}
+        />
+
+        <View style={styles.buttonContainer}>
+          <Button mode="contained" style={styles.button} onPress={() => {}}>
+            Rok
+          </Button>
+          <Button mode="contained" style={styles.button} onPress={() => {}}>
+            3 Lata
+          </Button>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
-    padding: 16,
     backgroundColor: "#151515",
+  },
+  container: {
+    padding: 16,
+  },
+  addButton: {
+    backgroundColor: "#a91d3a",
+    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: "row",

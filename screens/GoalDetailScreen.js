@@ -7,10 +7,9 @@ const GoalDetailsScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Szczegóły Celu</Text>
-      <Text style={styles.detail}>Tytuł: {goal.title}</Text>
-      <Text style={styles.detail}>Opis: {goal.description}</Text>
-      <Text style={styles.detail}>Termin: {goal.deadline}</Text>
-      <Text style={styles.detail}>Postęp: {goal.progress}%</Text>
+      <Text style={styles.goal}>Tytuł: {goal.title}</Text>
+      <Text style={styles.goal}>Opis: {goal.description}</Text>
+      <Text style={styles.goal}>Termin: {goal.deadline}</Text>
     </View>
   );
 };
@@ -28,10 +27,9 @@ const styles = StyleSheet.create({
     color: "#eeeeee",
     marginBottom: 20,
   },
-  detail: {
+  goal: {
     fontSize: 18,
     color: "#eeeeee",
-    marginBottom: 10,
   },
 });
 
