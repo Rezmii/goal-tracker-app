@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-const GoalsScreen = () => {
+const LevelGoalsScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Twoje Cele</Text>
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoalsScreen;
+export default LevelGoalsScreen;
