@@ -9,7 +9,7 @@ const TimeGoalCard = ({ title, goals, onGoalPress }) => {
         <Text style={styles.sectionTitle}>{title}</Text>
         {goals.map((goal, index) => (
           <TouchableOpacity key={index} onPress={() => onGoalPress(goal)}>
-            <Text style={styles.goal}>• {goal}</Text>
+            <Text style={styles.goal}>• {goal.title}</Text>
           </TouchableOpacity>
         ))}
       </Card.Content>
