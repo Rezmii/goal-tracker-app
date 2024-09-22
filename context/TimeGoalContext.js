@@ -32,6 +32,18 @@ export const TimeGoalsProvider = ({ children }) => {
       "2024-12-31",
       "3 miesiące"
     ),
+    new TimeGoal(
+      "Zaoszczędzić 1000 PLN",
+      "Oszczędności na lokacie",
+      "2024-12-31",
+      "rok"
+    ),
+    new TimeGoal(
+      "Zaoszczędzić 1000 PLN",
+      "Oszczędności na lokacie",
+      "2024-12-31",
+      "3 lata"
+    ),
   ]);
 
   // Funkcja do dodawania nowych celów

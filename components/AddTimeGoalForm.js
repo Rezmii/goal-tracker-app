@@ -1,6 +1,12 @@
 import React, { useState, useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { TextInput, Button, Menu, Divider } from "react-native-paper";
+import {
+  TextInput,
+  Button,
+  Menu,
+  Divider,
+  IconButton,
+} from "react-native-paper";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import TimeGoal from "../models/TimeGoal";
 
@@ -36,9 +42,19 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Dodaj nowy cel</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Dodaj nowy cel</Text>
+        <IconButton
+          icon="close"
+          mode="contained"
+          size={18}
+          onPress={handleCloseForm}
+          iconColor="white"
+          containerColor="#a91d3a"
+        />
+      </View>
       <TextInput
-        label="Title"
+        label="Tytuł"
         value={title}
         onChangeText={setTitle}
         style={styles.input}
@@ -53,23 +69,9 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
         placeholderTextColor="white"
       />
       <TextInput
-        label="Description"
+        label="Opis"
         value={description}
         onChangeText={setDescription}
-        style={styles.input}
-        theme={{
-          colors: {
-            primary: "#a91d3a",
-            background: "#151515",
-            onSurfaceVariant: "white",
-          },
-        }}
-        textColor="white"
-      />
-      <TextInput
-        label="Deadline"
-        value={deadline}
-        onChangeText={setDeadline}
         style={styles.input}
         theme={{
           colors: {
@@ -85,7 +87,7 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
         onDismiss={closeMenu}
         anchor={
           <TextInput
-            label="Time Period"
+            label="Termin"
             value={timePeriod}
             onPressIn={openMenu}
             style={styles.input}
@@ -116,14 +118,7 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
       </Menu>
       <View style={styles.buttonContainer}>
         <Button mode="contained" onPress={handleAddGoal} style={styles.button}>
-          Add Goal
-        </Button>
-        <Button
-          mode="contained"
-          onPress={handleCloseForm}
-          style={styles.closeButton}
-        >
-          Close
+          Dodaj nowy cel
         </Button>
       </View>
     </View>
@@ -136,10 +131,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#151515",
     flex: 1,
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+
   header: {
     fontSize: 24, // Size of the header text
     color: "white", // Color of the header text
-    marginBottom: 16, // Space below the header
   },
   input: {
     marginBottom: 16,
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 16,
+    marginTop: 10,
   },
   button: {
     backgroundColor: "#a91d3a", // Match the theme color

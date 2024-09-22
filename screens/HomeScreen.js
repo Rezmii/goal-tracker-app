@@ -8,31 +8,37 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ekran Główny</Text>
+      <Text style={styles.title}>Twoje Cele</Text>
 
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate("TimeGoals")}
-      >
-        Time Goals
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => navigation.navigate("TimeGoals")}
+        >
+          Cele Czasowe
+        </Button>
+      </View>
 
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate("LevelGoals")}
-      >
-        3 Level Goals
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => navigation.navigate("LevelGoals")}
+        >
+          Cele 3 Poziomowe
+        </Button>
+      </View>
 
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate("GeneralGoals")}
-      >
-        General Goals
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => navigation.navigate("GeneralGoals")}
+        >
+          Cele Ogólne
+        </Button>
+      </View>
     </View>
   );
 };
@@ -49,9 +55,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#eeeeee",
   },
+  buttonContainer: {
+    width: "50%",
+  },
   button: {
     marginTop: 20,
     backgroundColor: "#a91d3a",
+    width: "100%",
   },
 });
 

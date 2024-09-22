@@ -33,7 +33,7 @@ const TimeGoalsScreen = ({ navigation }) => {
             style={styles.addButton}
             onPress={() => setShowAddGoalForm(true)}
           >
-            Dodaj Nowy Cel
+            Dodaj nowy cel
           </Button>
         )}
 
@@ -52,15 +52,16 @@ const TimeGoalsScreen = ({ navigation }) => {
           goals={filterGoalsByTimePeriod("3 miesiące")}
           onGoalPress={handleGoalPress}
         />
-
-        <View style={styles.buttonContainer}>
-          <Button mode="contained" style={styles.button} onPress={() => {}}>
-            Rok
-          </Button>
-          <Button mode="contained" style={styles.button} onPress={() => {}}>
-            3 Lata
-          </Button>
-        </View>
+        <TimeGoalCard
+          title="rok:"
+          goals={filterGoalsByTimePeriod("rok")}
+          onGoalPress={handleGoalPress}
+        />
+        <TimeGoalCard
+          title="3 lata:"
+          goals={filterGoalsByTimePeriod("3 lata")}
+          onGoalPress={handleGoalPress}
+        />
       </View>
     </ScrollView>
   );
@@ -77,16 +78,6 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: "#a91d3a",
     marginBottom: 16,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 25,
-    marginTop: 16,
-  },
-  button: {
-    backgroundColor: "#a91d3a",
-    paddingHorizontal: 45,
   },
 });
 
