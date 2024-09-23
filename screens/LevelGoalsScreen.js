@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from "react-native";
 const LevelGoalsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Twoje Cele</Text>
+      <Text style={styles.title}>Kocham Cię! 🤍</Text>
     </View>
   );
 };

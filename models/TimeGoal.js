@@ -1,8 +1,12 @@
+import uuid from "react-native-uuid";
+
 export default class TimeGoal {
   constructor(title, description, deadline, timePeriod) {
-    this.title = title; // Tytuł celu
-    this.description = description; // Krótki opis
-    this.deadline = deadline; // Termin zakończenia
+    this.id = uuid.v4();
+    this.title = title;
+    this.description = description;
+    this.deadline = deadline;
     this.timePeriod = timePeriod;
+    this.done = false;
   }
 }

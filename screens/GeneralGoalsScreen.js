@@ -4,7 +4,9 @@ import { Text, View, StyleSheet } from "react-native";
 const GeneralGoalsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Twoje Cele</Text>
+      <Text style={styles.title}>
+        Odkąd jesteśmy razem jestem najszczęśliwszy na świecie :D
+      </Text>
     </View>
   );
 };

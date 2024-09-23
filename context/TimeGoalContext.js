@@ -6,7 +6,6 @@ export const TimeGoalsContext = createContext();
 
 // Komponent dostawcy kontekstu
 export const TimeGoalsProvider = ({ children }) => {
-  // Stan globalny dla celów
   const [goals, setGoals] = useState([
     new TimeGoal(
       "Ukończyć prezentację",
@@ -33,26 +32,43 @@ export const TimeGoalsProvider = ({ children }) => {
       "3 miesiące"
     ),
     new TimeGoal(
-      "Zaoszczędzić 1000 PLN",
+      "Zaoszczędzić 1002 PLN",
       "Oszczędności na lokacie",
       "2024-12-31",
       "rok"
     ),
     new TimeGoal(
-      "Zaoszczędzić 1000 PLN",
+      "Zaoszczędzić 1001 PLN",
       "Oszczędności na lokacie",
       "2024-12-31",
       "3 lata"
     ),
   ]);
 
-  // Funkcja do dodawania nowych celów
   const addGoal = (goal) => {
     setGoals([...goals, goal]);
   };
 
+  const toggleGoalDone = (id) => {
+    setGoals(
+      goals.map((goal) =>
+        goal.id === id ? { ...goal, done: !goal.done } : goal
+      )
+    );
+  };
+
+  const deleteGoal = (id) => {
+    setGoals(goals.filter((goal) => goal.id !== id));
+  };
+
+  const updateGoal = (id, updatedGoal) => {
+    setGoals(goals.map((goal) => (goal.id === id ? updatedGoal : goal)));
+  };
+
   return (
-    <TimeGoalsContext.Provider value={{ goals, addGoal }}>
+    <TimeGoalsContext.Provider
+      value={{ goals, addGoal, toggleGoalDone, deleteGoal, updateGoal }}
+    >
       {children}
     </TimeGoalsContext.Provider>
   );
