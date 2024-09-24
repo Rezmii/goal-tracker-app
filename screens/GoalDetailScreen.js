@@ -61,6 +61,20 @@ const GoalDetailsScreen = ({ route, navigation }) => {
               style={styles.priorityIcon}
             />
           </View>
+          <View style={styles.priorityContainer}>
+            <Paragraph style={styles.priorityDetails}>Zrobione:</Paragraph>
+            <IconButton
+              icon={
+                goal.done
+                  ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
+                  : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
+              }
+              size={20}
+              iconColor="#f5f5f5"
+              onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
+              style={styles.priorityIcon}
+            />
+          </View>
         </Card.Content>
       </Card>
       <View style={styles.buttonContainer}>

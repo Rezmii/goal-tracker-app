@@ -5,6 +5,7 @@ import TimeGoalCard from "../components/TimeGoalCard";
 import AddTimeGoalForm from "../components/AddTimeGoalForm";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import { useContext, useState } from "react";
+import { getTimeRemaining } from "../utils/timeUtils";
 
 const TimeGoalsScreen = ({ navigation }) => {
   const { goals } = useContext(TimeGoalsContext);
@@ -38,29 +39,34 @@ const TimeGoalsScreen = ({ navigation }) => {
         )}
 
         <TimeGoalCard
-          title="Ten tydzień:"
+          title={`Ten tydzień: (${getTimeRemaining("week")})`}
           goals={filterGoalsByTimePeriod("ten tydzień")}
           onGoalPress={handleGoalPress}
+          timePeriod="week"
         />
         <TimeGoalCard
-          title="Ten miesiąc:"
+          title={`Ten miesiąc: (${getTimeRemaining("month")})`}
           goals={filterGoalsByTimePeriod("ten miesiąc")}
           onGoalPress={handleGoalPress}
+          timePeriod="month"
         />
         <TimeGoalCard
-          title="3 miesiące:"
+          title={`3 miesiące: (${getTimeRemaining("quarter")})`}
           goals={filterGoalsByTimePeriod("3 miesiące")}
           onGoalPress={handleGoalPress}
+          timePeriod="quarter"
         />
         <TimeGoalCard
-          title="rok:"
+          title={`Rok: (${getTimeRemaining("year")})`}
           goals={filterGoalsByTimePeriod("rok")}
           onGoalPress={handleGoalPress}
+          timePeriod="year"
         />
         <TimeGoalCard
-          title="3 lata:"
+          title={`3 lata: (${getTimeRemaining("threeYears")})`}
           goals={filterGoalsByTimePeriod("3 lata")}
           onGoalPress={handleGoalPress}
+          timePeriod="threeYears"
         />
       </View>
     </ScrollView>

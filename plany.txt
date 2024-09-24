@@ -1,7 +1,6 @@
 -dodac strzalki powrotu 
 -Pokazanie ile do końca każdego okresu pozostało
 -Zabezpieczenia w formularzu
--Zaznaczanie celu jako priorytet (wtedy jest oznaczany innym kolorem albo jest pogrubiony)
 -Powiadomienia przed zakończeniem danego okresu
 -Ogarnąć co robić jak dany okres minie (Może wyświetla się opcja edycji, które cele pozostawić a które usunąć, żeby się od razu nie kasowało)
  Oraz dodać jakieś powiadomienie o potrzebie wypisania nowych celów (to może być spoko dla mnie bo będzie faktycznie mi przypominać że muszę określic nowe cele)
