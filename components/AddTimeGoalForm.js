@@ -6,6 +6,7 @@ import {
   Menu,
   Divider,
   IconButton,
+  Switch,
 } from "react-native-paper";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import TimeGoal from "../models/TimeGoal";
@@ -16,10 +17,17 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
+  const [priority, setPriority] = useState(false); // New state for priority
   const [visible, setVisible] = useState(false);
 
   const handleAddGoal = () => {
-    const newGoal = new TimeGoal(title, description, deadline, timePeriod);
+    const newGoal = new TimeGoal(
+      title,
+      description,
+      deadline,
+      timePeriod,
+      priority
+    ); // Pass priority to the new goal
     addGoal(newGoal);
     onAddGoal();
   };
@@ -37,6 +45,7 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
     setDescription("");
     setDeadline("");
     setTimePeriod("");
+    setPriority(false); // Reset priority when closing form
     onAddGoal();
   };
 
@@ -116,6 +125,17 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
         )}
         <Divider />
       </Menu>
+
+      {/* Priority Switch */}
+      <View style={styles.priorityContainer}>
+        <Text style={styles.priorityLabel}>Priorytet:</Text>
+        <Switch
+          value={priority}
+          onValueChange={() => setPriority(!priority)}
+          color="#a91d3a"
+        />
+      </View>
+
       <View style={styles.buttonContainer}>
         <Button mode="contained" onPress={handleAddGoal} style={styles.button}>
           Dodaj nowy cel
@@ -137,15 +157,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
-
   header: {
-    fontSize: 24, // Size of the header text
-    color: "white", // Color of the header text
+    fontSize: 24,
+    color: "white",
   },
   input: {
     marginBottom: 16,
-    backgroundColor: "#252525", // Darker background for inputs
-    color: "white", // Text color for better readability
+    backgroundColor: "#252525",
+    color: "white",
+  },
+  priorityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  priorityLabel: {
+    fontSize: 16,
+    color: "white",
+    marginRight: 8,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -153,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
-    backgroundColor: "#a91d3a", // Match the theme color
+    backgroundColor: "#a91d3a",
     flex: 1,
     marginRight: 8,
   },
@@ -162,10 +191,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuItem: {
-    backgroundColor: "#252525", // Black background for menu items
+    backgroundColor: "#252525",
   },
   menuItemText: {
-    color: "white", // White text color for menu items
+    color: "white",
   },
 });
 

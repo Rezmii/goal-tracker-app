@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { TextInput, Button, IconButton } from "react-native-paper";
+import { TextInput, Button, IconButton, Switch } from "react-native-paper";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 
 const EditTimeGoalForm = ({ goal, onEditGoal }) => {
@@ -9,16 +9,25 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
   const [description, setDescription] = useState(goal.description || "");
   const [deadline, setDeadline] = useState(goal.deadline || "");
   const [timePeriod, setTimePeriod] = useState(goal.timePeriod || "");
+  const [priority, setPriority] = useState(goal.priority || false); // New state for priority
 
   useEffect(() => {
     setTitle(goal.title);
     setDescription(goal.description);
     setDeadline(goal.deadline);
     setTimePeriod(goal.timePeriod);
+    setPriority(goal.priority || false); // Ensure priority is set when editing
   }, [goal]);
 
   const handleEditGoal = () => {
-    const updatedGoal = { ...goal, title, description, deadline, timePeriod };
+    const updatedGoal = {
+      ...goal,
+      title,
+      description,
+      deadline,
+      timePeriod,
+      priority,
+    }; // Include priority
     updateGoal(goal.id, updatedGoal);
     onEditGoal(updatedGoal);
   };
@@ -84,6 +93,16 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
         textColor="white"
       />
 
+      {/* Priority Switch */}
+      <View style={styles.priorityContainer}>
+        <Text style={styles.priorityLabel}>Priorytet:</Text>
+        <Switch
+          value={priority}
+          onValueChange={() => setPriority(!priority)}
+          color="#a91d3a"
+        />
+      </View>
+
       <View style={styles.buttonContainer}>
         <Button mode="contained" onPress={handleEditGoal} style={styles.button}>
           Zapisz zmiany
@@ -113,6 +132,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: "#252525",
     color: "white",
+  },
+  priorityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  priorityLabel: {
+    fontSize: 16,
+    color: "white",
+    marginRight: 8,
   },
   buttonContainer: {
     marginTop: 10,

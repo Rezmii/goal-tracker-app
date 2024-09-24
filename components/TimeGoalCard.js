@@ -12,31 +12,37 @@ const TimeGoalCard = ({ title, goals, onGoalPress }) => {
       <Card.Content>
         <Text style={styles.sectionTitle}>{title}</Text>
         {goals.map((goal, index) => (
-          <>
-            <View style={styles.flexContainer}>
-              <View style={styles.goalContainer}>
-                <IconButton
-                  icon={goal.done ? "check-circle" : "circle-outline"}
-                  size={20}
-                  iconColor="white"
-                  onPress={() => toggleGoalDone(goal.id)}
-                />
-                <TouchableOpacity key={index} onPress={() => onGoalPress(goal)}>
-                  <Text style={[styles.goal, goal.done && styles.doneGoal]}>
-                    {goal.title}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
+          <View key={index} style={styles.flexContainer}>
+            <View style={styles.goalContainer}>
               <IconButton
-                icon="trash-can"
-                size={20}
+                icon={goal.done ? "check-circle" : "circle-outline"}
+                size={22}
                 iconColor="white"
-                onPress={() => deleteGoal(goal.id)}
-                style={styles.deleteButton}
+                onPress={() => toggleGoalDone(goal.id)}
               />
+              <TouchableOpacity
+                style={styles.touchableGoal}
+                onPress={() => onGoalPress(goal)}
+              >
+                <Text
+                  style={[
+                    styles.goal,
+                    goal.done && styles.doneGoal,
+                    goal.priority && styles.priorityGoal,
+                  ]}
+                >
+                  {goal.title}
+                </Text>
+              </TouchableOpacity>
             </View>
-          </>
+            <IconButton
+              icon="trash-can"
+              size={22}
+              iconColor="white"
+              onPress={() => deleteGoal(goal.id)}
+              style={styles.deleteButton}
+            />
+          </View>
         ))}
       </Card.Content>
     </Card>
@@ -57,20 +63,31 @@ const styles = StyleSheet.create({
   flexContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: -9,
+    alignItems: "center",
+    marginVertical: -5,
   },
   goalContainer: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
+  },
+  touchableGoal: {
+    flex: 1,
   },
   goal: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#eeeeee",
     marginLeft: -8,
   },
   doneGoal: {
     textDecorationLine: "line-through",
     color: "#bfbfbf",
+  },
+  priorityGoal: {
+    fontWeight: "bold",
+  },
+  deleteButton: {
+    marginLeft: 8,
   },
 });
 

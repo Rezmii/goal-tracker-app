@@ -47,6 +47,20 @@ const GoalDetailsScreen = ({ route, navigation }) => {
           <Divider style={styles.divider} />
           <Paragraph style={styles.details}>Opis: {goal.description}</Paragraph>
           <Paragraph style={styles.details}>Termin: {goal.deadline}</Paragraph>
+          <View style={styles.priorityContainer}>
+            <Paragraph style={styles.priorityDetails}>Priorytet:</Paragraph>
+            <IconButton
+              icon={
+                goal.priority
+                  ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
+                  : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
+              }
+              size={20}
+              iconColor="#f5f5f5"
+              onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
+              style={styles.priorityIcon}
+            />
+          </View>
         </Card.Content>
       </Card>
       <View style={styles.buttonContainer}>
@@ -91,6 +105,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "bold",
   },
+
   divider: {
     marginVertical: 12,
     backgroundColor: "#ffffff",
@@ -100,13 +115,19 @@ const styles = StyleSheet.create({
     color: "#f0f0f0",
     marginBottom: 8,
   },
+  priorityDetails: { fontSize: 16, color: "#f0f0f0" },
+  priorityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: -10,
+  },
   buttonContainer: {
     flexDirection: "row",
     marginTop: 20,
     justifyContent: "center",
   },
   editButton: {
-    backgroundColor: "#a91d3a", // Red background for edit button
+    backgroundColor: "#a91d3a", // Czerwone tło dla przycisku edycji
     width: "60%",
     borderRadius: 25,
   },

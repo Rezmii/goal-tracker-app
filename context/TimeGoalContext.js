@@ -11,7 +11,8 @@ export const TimeGoalsProvider = ({ children }) => {
       "Ukończyć prezentację",
       "Prezentacja na piątek",
       "2024-09-29",
-      "ten tydzień"
+      "ten tydzień",
+      true
     ),
     new TimeGoal(
       "Przeczytać książkę",
