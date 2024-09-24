@@ -1,9 +1,17 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Card, IconButton } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import {
+  Card,
+  IconButton,
+  Button,
+  Divider,
+  Title,
+  Paragraph,
+} from "react-native-paper";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import { useContext, useState } from "react";
 import EditTimeGoalForm from "../components/EditTimeGoalForm";
+import BackArrow from "../components/BackArrow";
 
 const GoalDetailsScreen = ({ route, navigation }) => {
   const { goal: initialGoal } = route.params;
@@ -23,36 +31,39 @@ const GoalDetailsScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <>
-        <IconButton
-          icon="trash-can"
-          size={30}
-          iconColor="white"
-          onPress={handleDelete}
-          style={styles.deleteButton}
-        />
-        <Card style={styles.card}>
-          <Card.Content>
-            <Text style={styles.title}>{goal.title}</Text>
-            <Text style={styles.details}>Szczegóły celu:</Text>
-            <Text style={styles.goal}>Opis: {goal.description}</Text>
-            <Text style={styles.goal}>Termin: {goal.deadline}</Text>
-          </Card.Content>
-        </Card>
-        <View style={styles.buttonContainer}>
-          {isEditing ? (
-            <EditTimeGoalForm goal={goal} onEditGoal={handleEditGoal} />
-          ) : (
+      <BackArrow />
+      <Card style={styles.card}>
+        <Card.Content>
+          <View style={styles.titleContainer}>
+            <Title style={styles.title}>{goal.title}</Title>
             <IconButton
-              icon="pencil"
-              size={30}
-              iconColor="white"
-              onPress={() => setIsEditing(true)}
-              style={styles.editButton}
+              icon="close"
+              size={28}
+              iconColor="#f5f5f5"
+              onPress={handleDelete}
+              style={styles.deleteButton}
             />
-          )}
-        </View>
-      </>
+          </View>
+          <Divider style={styles.divider} />
+          <Paragraph style={styles.details}>Opis: {goal.description}</Paragraph>
+          <Paragraph style={styles.details}>Termin: {goal.deadline}</Paragraph>
+        </Card.Content>
+      </Card>
+      <View style={styles.buttonContainer}>
+        {isEditing ? (
+          <EditTimeGoalForm goal={goal} onEditGoal={handleEditGoal} />
+        ) : (
+          <Button
+            icon="pencil"
+            mode="contained"
+            onPress={() => setIsEditing(true)}
+            style={styles.editButton}
+            labelStyle={styles.editButtonLabel}
+          >
+            Edytuj
+          </Button>
+        )}
+      </View>
     </View>
   );
 };
@@ -60,42 +71,52 @@ const GoalDetailsScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#151515",
-    padding: 16,
+    backgroundColor: "#121212",
+    padding: 20,
     justifyContent: "center",
-    alignItems: "center",
   },
   card: {
     width: "100%",
     backgroundColor: "#a91d3a",
-    padding: 16,
+    borderRadius: 12,
+    paddingVertical: 20,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 24,
-    color: "#eeeeee",
-    marginBottom: 20,
-    textAlign: "center",
+    color: "#ffffff",
+    fontWeight: "bold",
+  },
+  divider: {
+    marginVertical: 12,
+    backgroundColor: "#ffffff",
   },
   details: {
-    fontSize: 22,
-    color: "#eeeeee",
-    marginBottom: 10,
-  },
-  goal: {
-    fontSize: 18,
-    color: "#eeeeee",
-    marginBottom: 10,
+    fontSize: 16,
+    color: "#f0f0f0",
+    marginBottom: 8,
   },
   buttonContainer: {
     flexDirection: "row",
     marginTop: 20,
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   editButton: {
-    backgroundColor: "#a91d3a",
+    backgroundColor: "#a91d3a", // Red background for edit button
+    width: "60%",
+    borderRadius: 25,
+  },
+  editButtonLabel: {
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
   },
   deleteButton: {
-    backgroundColor: "#a91d3a",
+    borderRadius: 20,
   },
 });
 

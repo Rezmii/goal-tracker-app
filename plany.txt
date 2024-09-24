@@ -1,4 +1,6 @@
 -Zrobic ladny design w GoalDetailScreen
+-klikanie w konkretny cel powinno byc latwiejsze (wieksza powierzchnia przycisku)
+-dodac strzalki powrotu (no tak jakby)
 -Pokazanie ile do końca każdego okresu pozostało
 -Zabezpieczenia w formularzu
 -Zaznaczanie celu jako priorytet (wtedy jest oznaczany innym kolorem albo jest pogrubiony)
