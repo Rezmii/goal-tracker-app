@@ -1,5 +1,4 @@
--dodac strzalki powrotu 
--Pokazanie ile do końca każdego okresu pozostało
+-modal potwierdzajacy usuniecie celu
 -Zabezpieczenia w formularzu
 -Powiadomienia przed zakończeniem danego okresu
 -Ogarnąć co robić jak dany okres minie (Może wyświetla się opcja edycji, które cele pozostawić a które usunąć, żeby się od razu nie kasowało)

@@ -22,9 +22,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     backgroundColor: "#121212",
-    position: "absolute",
-    top: 10,
-    left: 10,
     zIndex: 1,
   },
   text: {

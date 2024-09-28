@@ -9,14 +9,16 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
   const [description, setDescription] = useState(goal.description || "");
   const [deadline, setDeadline] = useState(goal.deadline || "");
   const [timePeriod, setTimePeriod] = useState(goal.timePeriod || "");
-  const [priority, setPriority] = useState(goal.priority || false); // New state for priority
+  const [priority, setPriority] = useState(goal.priority || false);
+  const [done, setDone] = useState(goal.done || false);
 
   useEffect(() => {
     setTitle(goal.title);
     setDescription(goal.description);
     setDeadline(goal.deadline);
     setTimePeriod(goal.timePeriod);
-    setPriority(goal.priority || false); // Ensure priority is set when editing
+    setPriority(goal.priority || false);
+    setDone(goal.done || false);
   }, [goal]);
 
   const handleEditGoal = () => {
@@ -27,7 +29,8 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
       deadline,
       timePeriod,
       priority,
-    }; // Include priority
+      done,
+    };
     updateGoal(goal.id, updatedGoal);
     onEditGoal(updatedGoal);
   };
@@ -93,12 +96,17 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
         textColor="white"
       />
 
-      {/* Priority Switch */}
       <View style={styles.priorityContainer}>
         <Text style={styles.priorityLabel}>Priorytet:</Text>
         <Switch
           value={priority}
           onValueChange={() => setPriority(!priority)}
+          color="#a91d3a"
+        />
+        <Text style={styles.priorityLabel}>Zrobione:</Text>
+        <Switch
+          value={done}
+          onValueChange={() => setDone(!done)}
           color="#a91d3a"
         />
       </View>

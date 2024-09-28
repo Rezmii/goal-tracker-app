@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Card,
   IconButton,
@@ -12,16 +12,31 @@ import { TimeGoalsContext } from "../context/TimeGoalContext";
 import { useContext, useState } from "react";
 import EditTimeGoalForm from "../components/EditTimeGoalForm";
 import BackArrow from "../components/BackArrow";
+import DeleteGoalDialog from "../components/DeleteGoalDialog";
 
 const GoalDetailsScreen = ({ route, navigation }) => {
   const { goal: initialGoal } = route.params;
   const { deleteGoal } = useContext(TimeGoalsContext);
   const [goal, setGoal] = useState(initialGoal);
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [goalToDelete, setGoalToDelete] = useState(null);
 
-  const handleDelete = () => {
+  const confirmDelete = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
     deleteGoal(goal.id);
+
+    setIsModalVisible(false);
+
     navigation.goBack();
+  };
+
+  const handleCancelDelete = () => {
+    setIsModalVisible(false);
+    setGoalToDelete(null); // Zresetuj stan
   };
 
   const handleEditGoal = (updatedGoal) => {
@@ -30,78 +45,99 @@ const GoalDetailsScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <BackArrow />
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.titleContainer}>
-            <Title style={styles.title}>{goal.title}</Title>
-            <IconButton
-              icon="close"
-              size={28}
-              iconColor="#f5f5f5"
-              onPress={handleDelete}
-              style={styles.deleteButton}
-            />
-          </View>
-          <Divider style={styles.divider} />
-          <Paragraph style={styles.details}>Opis: {goal.description}</Paragraph>
-          <Paragraph style={styles.details}>Termin: {goal.deadline}</Paragraph>
-          <View style={styles.priorityContainer}>
-            <Paragraph style={styles.priorityDetails}>Priorytet:</Paragraph>
-            <IconButton
-              icon={
-                goal.priority
-                  ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
-                  : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
-              }
-              size={20}
-              iconColor="#f5f5f5"
-              onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
-              style={styles.priorityIcon}
-            />
-          </View>
-          <View style={styles.priorityContainer}>
-            <Paragraph style={styles.priorityDetails}>Zrobione:</Paragraph>
-            <IconButton
-              icon={
-                goal.done
-                  ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
-                  : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
-              }
-              size={20}
-              iconColor="#f5f5f5"
-              onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
-              style={styles.priorityIcon}
-            />
-          </View>
-        </Card.Content>
-      </Card>
-      <View style={styles.buttonContainer}>
-        {isEditing ? (
-          <EditTimeGoalForm goal={goal} onEditGoal={handleEditGoal} />
-        ) : (
-          <Button
-            icon="pencil"
-            mode="contained"
-            onPress={() => setIsEditing(true)}
-            style={styles.editButton}
-            labelStyle={styles.editButtonLabel}
-          >
-            Edytuj
-          </Button>
-        )}
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      style={{ backgroundColor: "#151515" }}
+    >
+      <View style={styles.container}>
+        <BackArrow />
+        <Card style={styles.card}>
+          <Card.Content>
+            <View style={styles.titleContainer}>
+              <Title style={styles.title}>{goal.title}</Title>
+              <IconButton
+                icon="close"
+                size={28}
+                iconColor="#f5f5f5"
+                onPress={confirmDelete}
+                style={styles.deleteButton}
+              />
+            </View>
+            <Divider style={styles.divider} />
+            <Paragraph style={styles.details}>
+              Opis: {goal.description}
+            </Paragraph>
+            <Paragraph style={styles.details}>
+              Termin: {goal.deadline}
+            </Paragraph>
+            <View style={styles.priorityContainer}>
+              <Paragraph style={[styles.priorityDetails, { marginRight: 2 }]}>
+                Priorytet:
+              </Paragraph>
+              <IconButton
+                icon={
+                  goal.priority
+                    ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
+                    : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
+                }
+                size={20}
+                iconColor="#f5f5f5"
+                onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
+                style={styles.priorityIcon}
+              />
+            </View>
+            <View style={styles.priorityContainer}>
+              <Paragraph style={styles.priorityDetails}>Zrobione:</Paragraph>
+              <IconButton
+                icon={
+                  goal.done
+                    ? "checkbox-marked-circle" // pełne kółko, gdy priorytet jest true
+                    : "checkbox-blank-circle-outline" // puste kółko, gdy priorytet jest false
+                }
+                size={20}
+                iconColor="#f5f5f5"
+                onPress={() => {}} // Opcjonalnie można dodać funkcję zmiany priorytetu
+                style={styles.priorityIcon}
+              />
+            </View>
+          </Card.Content>
+        </Card>
+        <View style={styles.buttonContainer}>
+          {isEditing ? (
+            <EditTimeGoalForm goal={goal} onEditGoal={handleEditGoal} />
+          ) : (
+            <Button
+              icon="pencil"
+              mode="contained"
+              onPress={() => setIsEditing(true)}
+              style={styles.editButton}
+              labelStyle={styles.editButtonLabel}
+            >
+              Edytuj
+            </Button>
+          )}
+        </View>
       </View>
-    </View>
+      <DeleteGoalDialog
+        visible={isModalVisible}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "center", // Wyśrodkowanie w pionie
+    backgroundColor: "#151515",
+  },
   container: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "#121212",
     padding: 20,
-    justifyContent: "center",
   },
   card: {
     width: "100%",

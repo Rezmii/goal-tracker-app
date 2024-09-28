@@ -1,39 +1,66 @@
 import * as React from "react";
-import { Card, Text, IconButton } from "react-native-paper";
+import {
+  Card,
+  Text,
+  IconButton,
+  Dialog,
+  Paragraph,
+  Button,
+  Portal,
+} from "react-native-paper";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import { useContext, useState } from "react";
 import moment from "moment";
+import DeleteGoalDialog from "./DeleteGoalDialog";
 
 const TimeGoalCard = ({ title, goals, onGoalPress, timePeriod }) => {
   const { toggleGoalDone, deleteGoal } = useContext(TimeGoalsContext);
   const [isDateVisible, setIsDateVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [goalToDelete, setGoalToDelete] = useState(null);
+
+  const confirmDelete = (goalId) => {
+    setGoalToDelete(goalId);
+    setIsModalVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (goalToDelete) {
+      deleteGoal(goalToDelete); // Usuń cel na podstawie jego ID
+    }
+    setIsModalVisible(false);
+    setGoalToDelete(null); // Zresetuj stan
+  };
+
+  const handleCancelDelete = () => {
+    setIsModalVisible(false);
+    setGoalToDelete(null); // Zresetuj stan
+  };
 
   const calculateEndDate = (period) => {
-    const startDate = moment("2024-09-24", "YYYY-MM-DD");
+    const startDate = moment("24.09.2024", "DD.MM.YYYY");
     let endDate;
 
     switch (period) {
       case "week":
         endDate = startDate.add(1, "week");
-        break;
+        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
       case "month":
         endDate = startDate.add(1, "month");
-        break;
+        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
       case "quarter":
         endDate = startDate.add(3, "months");
-        break;
+        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
       case "year":
         endDate = startDate.add(1, "year");
-        break;
+        return endDate.format("DD.MM.YYYY"); // Wyświetl pełną datę
       case "threeYears":
         endDate = startDate.add(3, "years");
-        break;
+        return endDate.format("DD.MM.YYYY"); // Wyświetl pełną datę
       default:
         return "Nieznana data";
     }
-
-    return endDate.format("YYYY-MM-DD"); // Formatuj datę jako string
   };
 
   const handleTitlePress = () => {
@@ -45,46 +72,53 @@ const TimeGoalCard = ({ title, goals, onGoalPress, timePeriod }) => {
     : title;
 
   return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <TouchableOpacity onPress={handleTitlePress}>
-          <Text style={styles.sectionTitle}>{displayText}</Text>
-        </TouchableOpacity>
-        {goals.map((goal, index) => (
-          <View key={index} style={styles.flexContainer}>
-            <View style={styles.goalContainer}>
+    <>
+      <Card style={styles.card}>
+        <Card.Content>
+          <TouchableOpacity onPress={handleTitlePress}>
+            <Text style={styles.sectionTitle}>{displayText}</Text>
+          </TouchableOpacity>
+          {goals.map((goal, index) => (
+            <View key={index} style={styles.flexContainer}>
+              <View style={styles.goalContainer}>
+                <IconButton
+                  icon={goal.done ? "check-circle" : "circle-outline"}
+                  size={22}
+                  iconColor="white"
+                  onPress={() => toggleGoalDone(goal.id)}
+                />
+                <TouchableOpacity
+                  style={styles.touchableGoal}
+                  onPress={() => onGoalPress(goal)}
+                >
+                  <Text
+                    style={[
+                      styles.goal,
+                      goal.done && styles.doneGoal,
+                      goal.priority && styles.priorityGoal,
+                    ]}
+                  >
+                    {goal.title}
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <IconButton
-                icon={goal.done ? "check-circle" : "circle-outline"}
+                icon="trash-can"
                 size={22}
                 iconColor="white"
-                onPress={() => toggleGoalDone(goal.id)}
+                onPress={() => confirmDelete(goal.id)}
+                style={styles.deleteButton}
               />
-              <TouchableOpacity
-                style={styles.touchableGoal}
-                onPress={() => onGoalPress(goal)}
-              >
-                <Text
-                  style={[
-                    styles.goal,
-                    goal.done && styles.doneGoal,
-                    goal.priority && styles.priorityGoal,
-                  ]}
-                >
-                  {goal.title}
-                </Text>
-              </TouchableOpacity>
             </View>
-            <IconButton
-              icon="trash-can"
-              size={22}
-              iconColor="white"
-              onPress={() => deleteGoal(goal.id)}
-              style={styles.deleteButton}
-            />
-          </View>
-        ))}
-      </Card.Content>
-    </Card>
+          ))}
+        </Card.Content>
+      </Card>
+      <DeleteGoalDialog
+        visible={isModalVisible}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+    </>
   );
 };
 
@@ -125,8 +159,22 @@ const styles = StyleSheet.create({
   priorityGoal: {
     fontWeight: "bold",
   },
+  button: {
+    backgroundColor: "#a91d3a",
+    paddingHorizontal: 6,
+  },
   deleteButton: {
     marginLeft: 8,
+  },
+  dialog: {
+    backgroundColor: "rgb(21, 21, 21)", // Tło dialogu
+  },
+  dialogTitle: {
+    color: "#eeeeee", // Kolor tytułu dialogu
+  },
+  dialogParagraph: {
+    color: "#eeeeee", // Kolor tekstu w treści dialogu
+    fontSize: 16,
   },
 });
 
