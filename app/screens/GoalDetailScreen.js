@@ -22,12 +22,14 @@ const GoalDetailsScreen = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState(null);
 
+  console.log(initialGoal);
+
   const confirmDelete = () => {
     setIsModalVisible(true);
   };
 
   const handleConfirmDelete = () => {
-    deleteGoal(goal.id);
+    deleteGoal(goal._id);
 
     setIsModalVisible(false);
 
@@ -67,9 +69,7 @@ const GoalDetailsScreen = ({ route, navigation }) => {
             <Paragraph style={styles.details}>
               Opis: {goal.description}
             </Paragraph>
-            <Paragraph style={styles.details}>
-              Termin: {goal.deadline}
-            </Paragraph>
+            <Paragraph style={styles.details}>Termin: {goal.endDate}</Paragraph>
             <View style={styles.priorityContainer}>
               <Paragraph style={[styles.priorityDetails, { marginRight: 2 }]}>
                 Priorytet:

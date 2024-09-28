@@ -7,7 +7,7 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
   const { updateGoal } = useContext(TimeGoalsContext);
   const [title, setTitle] = useState(goal.title || "");
   const [description, setDescription] = useState(goal.description || "");
-  const [deadline, setDeadline] = useState(goal.deadline || "");
+  const [endDate, setEndDate] = useState(goal.endDate || "");
   const [timePeriod, setTimePeriod] = useState(goal.timePeriod || "");
   const [priority, setPriority] = useState(goal.priority || false);
   const [done, setDone] = useState(goal.done || false);
@@ -15,7 +15,7 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
   useEffect(() => {
     setTitle(goal.title);
     setDescription(goal.description);
-    setDeadline(goal.deadline);
+    setEndDate(goal.endDate);
     setTimePeriod(goal.timePeriod);
     setPriority(goal.priority || false);
     setDone(goal.done || false);
@@ -26,12 +26,12 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
       ...goal,
       title,
       description,
-      deadline,
+      endDate,
       timePeriod,
       priority,
       done,
     };
-    updateGoal(goal.id, updatedGoal);
+    updateGoal(goal._id, updatedGoal);
     onEditGoal(updatedGoal);
   };
 
@@ -83,8 +83,8 @@ const EditTimeGoalForm = ({ goal, onEditGoal }) => {
       />
       <TextInput
         label="Termin"
-        value={deadline}
-        onChangeText={setDeadline}
+        value={endDate}
+        onChangeText={setEndDate}
         style={styles.input}
         theme={{
           colors: {

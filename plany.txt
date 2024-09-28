@@ -1,8 +1,9 @@
--modal potwierdzajacy usuniecie celu
 -Zabezpieczenia w formularzu
 -Powiadomienia przed zakończeniem danego okresu
 -Ogarnąć co robić jak dany okres minie (Może wyświetla się opcja edycji, które cele pozostawić a które usunąć, żeby się od razu nie kasowało)
  Oraz dodać jakieś powiadomienie o potrzebie wypisania nowych celów (to może być spoko dla mnie bo będzie faktycznie mi przypominać że muszę określic nowe cele)
+ -gdy timeGoalCard jest pusty to ma sie wyswietlac tekst "Brak celow"
+-w edit klawiatura ma schodzic nizej bo nie widac co sie wpisuje
 
 Na potem:
 -3 poziomowe cele i ogólne cele

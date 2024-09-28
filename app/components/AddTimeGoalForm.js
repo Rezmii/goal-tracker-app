@@ -15,19 +15,19 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
   const { addGoal } = useContext(TimeGoalsContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [deadline, setDeadline] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
-  const [priority, setPriority] = useState(false); // New state for priority
+  const [priority, setPriority] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const handleAddGoal = () => {
-    const newGoal = new TimeGoal(
+    const newGoal = {
       title,
       description,
-      deadline,
+      endDate: "2024-09-29",
       timePeriod,
-      priority
-    ); // Pass priority to the new goal
+      priority,
+    };
     addGoal(newGoal);
     onAddGoal();
   };
@@ -43,9 +43,9 @@ const AddTimeGoalForm = ({ onAddGoal }) => {
   const handleCloseForm = () => {
     setTitle("");
     setDescription("");
-    setDeadline("");
+    setEndDate("");
     setTimePeriod("");
-    setPriority(false); // Reset priority when closing form
+    setPriority(false);
     onAddGoal();
   };
 

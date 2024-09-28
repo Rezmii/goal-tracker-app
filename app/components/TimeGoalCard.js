@@ -106,7 +106,7 @@ const TimeGoalCard = ({ title, goals, onGoalPress, timePeriod }) => {
                 icon="trash-can"
                 size={22}
                 iconColor="white"
-                onPress={() => confirmDelete(goal.id)}
+                onPress={() => confirmDelete(goal._id)}
                 style={styles.deleteButton}
               />
             </View>
