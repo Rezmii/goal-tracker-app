@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  Card,
-  Text,
-  IconButton,
-  Dialog,
-  Paragraph,
-  Button,
-  Portal,
-} from "react-native-paper";
+import { Card, Text, IconButton } from "react-native-paper";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
 import { useContext, useState } from "react";
@@ -38,37 +30,12 @@ const TimeGoalCard = ({ title, goals, onGoalPress, timePeriod }) => {
     setGoalToDelete(null); // Zresetuj stan
   };
 
-  const calculateEndDate = (period) => {
-    const startDate = moment("24.09.2024", "DD.MM.YYYY");
-    let endDate;
-
-    switch (period) {
-      case "week":
-        endDate = startDate.add(1, "week");
-        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
-      case "month":
-        endDate = startDate.add(1, "month");
-        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
-      case "quarter":
-        endDate = startDate.add(3, "months");
-        return endDate.format("DD.MM"); // Wyświetl tylko dzień i miesiąc
-      case "year":
-        endDate = startDate.add(1, "year");
-        return endDate.format("DD.MM.YYYY"); // Wyświetl pełną datę
-      case "threeYears":
-        endDate = startDate.add(3, "years");
-        return endDate.format("DD.MM.YYYY"); // Wyświetl pełną datę
-      default:
-        return "Nieznana data";
-    }
-  };
-
   const handleTitlePress = () => {
     setIsDateVisible((prev) => !prev); // Zmień stan na przeciwny
   };
 
   const displayText = isDateVisible
-    ? title.replace(/\(.*?\)/, `(${calculateEndDate(timePeriod)})`) // Zastąp tekst w nawiasach
+    ? `${title} (Termin: ${moment(goal.endDate).format("DD.MM.YYYY")})`
     : title;
 
   return (

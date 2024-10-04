@@ -9,7 +9,7 @@ import {
   Switch,
 } from "react-native-paper";
 import { TimeGoalsContext } from "../context/TimeGoalContext";
-import TimeGoal from "../models/TimeGoal";
+import { AuthContext } from "../context/AuthContext";
 
 const AddTimeGoalForm = ({ onAddGoal }) => {
   const { addGoal } = useContext(TimeGoalsContext);

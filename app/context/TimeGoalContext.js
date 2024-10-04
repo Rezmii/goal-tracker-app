@@ -1,5 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "./AuthContext";
 
 // Tworzymy kontekst
 export const TimeGoalsContext = createContext();
@@ -9,10 +11,24 @@ const SERVER_URL = "http://192.168.1.116:3000/timegoals";
 // Komponent dostawcy kontekstu
 export const TimeGoalsProvider = ({ children }) => {
   const [goals, setGoals] = useState([]);
+  const { user } = useContext(AuthContext);
+
+  const getAuthToken = async () => {
+    return await AsyncStorage.getItem("token");
+  };
 
   const fetchGoals = async () => {
     try {
-      const response = await axios.get(SERVER_URL);
+      setGoals([]);
+      const token = await getAuthToken(); // Pobieramy token asynchronicznie
+      if (!token) {
+        throw new Error("Token not available");
+      }
+      const response = await axios.get(SERVER_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Dodaj token do nagłówka
+        },
+      });
       setGoals(response.data);
     } catch (error) {
       console.error("Błąd przy pobieraniu celów:", error.message);
@@ -25,13 +41,21 @@ export const TimeGoalsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchGoals();
-  }, []);
+    if (user) {
+      fetchGoals(); // Wywołaj fetchGoals tylko jeśli użytkownik jest zalogowany
+    } else {
+      setGoals([]); // Opcjonalne: Wyczyść cele, gdy użytkownik jest wylogowany
+    }
+  }, [user]); // Dodaj user jako zależność
 
-  // Funkcja do dodawania nowego celu
   const addGoal = async (goal) => {
     try {
-      const response = await axios.post(SERVER_URL, goal);
+      const token = await getAuthToken(); // Pobieramy token asynchronicznie
+      const response = await axios.post(SERVER_URL, goal, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Dodaj token do nagłówka
+        },
+      });
       setGoals([...goals, response.data]);
     } catch (error) {
       console.error("Błąd przy dodawaniu celu:", error);
@@ -49,7 +73,12 @@ export const TimeGoalsProvider = ({ children }) => {
   // Funkcja do usuwania celu
   const deleteGoal = async (id) => {
     try {
-      await axios.delete(`${SERVER_URL}/${id}`);
+      const token = await getAuthToken(); // Pobieramy token asynchronicznie
+      await axios.delete(`${SERVER_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Dodaj token do nagłówka
+        },
+      });
       setGoals(goals.filter((goal) => goal._id !== id));
     } catch (error) {
       console.error("Błąd przy usuwaniu celu:", error);
@@ -59,7 +88,12 @@ export const TimeGoalsProvider = ({ children }) => {
   // Funkcja do aktualizacji celu
   const updateGoal = async (id, updatedGoal) => {
     try {
-      await axios.put(`${SERVER_URL}/${id}`, updatedGoal);
+      const token = await getAuthToken();
+      await axios.put(`${SERVER_URL}/${id}`, updatedGoal, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Dodaj token do nagłówka
+        },
+      });
       setGoals(goals.map((goal) => (goal._id === id ? updatedGoal : goal)));
     } catch (error) {
       console.error("Błąd przy aktualizacji celu:", error);
@@ -68,7 +102,14 @@ export const TimeGoalsProvider = ({ children }) => {
 
   return (
     <TimeGoalsContext.Provider
-      value={{ goals, addGoal, toggleGoalDone, deleteGoal, updateGoal }}
+      value={{
+        goals,
+        setGoals,
+        addGoal,
+        toggleGoalDone,
+        deleteGoal,
+        updateGoal,
+      }}
     >
       {children}
     </TimeGoalsContext.Provider>

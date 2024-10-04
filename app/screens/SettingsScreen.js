@@ -1,10 +1,14 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { useContext } from "react";
+import { Text, View, StyleSheet, Button } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 const SettingsScreen = () => {
+  const { logout } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ustawienia</Text>
+      <Button title="Wyloguj się" onPress={logout} />
     </View>
   );
 };

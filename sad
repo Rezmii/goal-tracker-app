@@ -1,0 +1,11 @@
+[33mcommit ddb0b64e81eddfb4ae2f6bb70901746879dfa290[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Rezmii <bartoszrezmer20@gmail.com>
+Date:   Sun Sep 29 09:15:06 2024 +0200
+
+    dodanie node modules do git ignore
+
+[33mcommit b5c56ec86ea447fd24e71504503160dbf87bda47[m
+Author: Rezmii <bartoszrezmer20@gmail.com>
+Date:   Sun Sep 29 09:13:26 2024 +0200
+
+    Przeniesienie repozytorium foldr wyzej
