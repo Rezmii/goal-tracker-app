@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   return (
     <Box bg="gray.900" color="white" w="250px" p={4} h="100vh" position="fixed">
-      <Text fontSize="2xl" mb={6} fontWeight="bold" color="red.500">
+      <Text fontSize="2xl" mb={6} fontWeight="bold" color="white">
         Zakładki
       </Text>
       <VStack align="start" gap={5} w="100%">

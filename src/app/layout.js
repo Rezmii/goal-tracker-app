@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
             <Sidebar />
             <Box flex="1" display="flex" flexDirection="column">
               <Topbar />
-              <Box flex="1" bg="gray.700" color="white" ml="250px">
+              <Box flex="1" bg="gray.800" color="white" ml="250px">
                 {children}
               </Box>
             </Box>
