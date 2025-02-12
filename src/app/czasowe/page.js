@@ -1,64 +1,77 @@
 "use client";
 
-import { Box, Heading, Container, Flex, VStack } from "@chakra-ui/react";
+import { Box, Heading, Container, Flex, Spinner, Text } from "@chakra-ui/react";
+import { useGoals } from "@/context/GoalsContext";
 
 const CzasowePage = () => {
+  const { goals, loading } = useGoals();
+
+  // 🔹 Filtrowanie celów według sekcji
+  const getGoalsByType = (type) => goals.filter((goal) => goal.type === type);
+
   return (
     <Container maxW="1000px" py={8}>
       <Heading mb={6} textAlign="center" color="white" fontWeight="bold">
         Twoje Cele
       </Heading>
 
-      {/* 🔹 Pierwszy rząd sekcji */}
-      <Flex gap={6}>
-        <Box flex="1" bg="red.700" p={5} borderRadius="md" boxShadow="md">
-          <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-            Ten tydzień
-          </Heading>
-          <Box mt={3} color="gray.300" textAlign="center">
-            Brak celów na ten tydzień.
-          </Box>
-        </Box>
+      {loading ? (
+        <Flex justify="center">
+          <Spinner size="xl" color="red.500" />
+        </Flex>
+      ) : (
+        <>
+          {/* 🔹 Sekcja 1: Tydzień / Miesiąc / 3 Miesiące */}
+          <Flex gap={6}>
+            {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
+              <Box
+                key={type}
+                flex="1"
+                bg="red.700"
+                p={5}
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <Heading size="lg" mb={3} color="gray.200" textAlign="center">
+                  {type}
+                </Heading>
+                <Box mt={3} color="gray.300" textAlign="center">
+                  {getGoalsByType(type).length > 0
+                    ? getGoalsByType(type).map((goal) => (
+                        <Text key={goal._id}>• {goal.text}</Text>
+                      ))
+                    : "Brak celów"}
+                </Box>
+              </Box>
+            ))}
+          </Flex>
 
-        <Box flex="1" bg="red.700" p={5} borderRadius="md" boxShadow="md">
-          <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-            Ten miesiąc
-          </Heading>
-          <Box mt={3} color="gray.300" textAlign="center">
-            Brak celów na ten miesiąc.
-          </Box>
-        </Box>
-
-        <Box flex="1" bg="red.700" p={5} borderRadius="md" boxShadow="md">
-          <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-            3 miesiące
-          </Heading>
-          <Box mt={3} color="gray.300" textAlign="center">
-            Brak celów na 3 miesiące.
-          </Box>
-        </Box>
-      </Flex>
-
-      {/* 🔹 Drugi rząd sekcji */}
-      <Flex gap={6} mt={6}>
-        <Box flex="1" bg="red.700" p={5} borderRadius="md" boxShadow="md">
-          <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-            Ten rok
-          </Heading>
-          <Box mt={3} color="gray.300" textAlign="center">
-            Brak celów na ten rok.
-          </Box>
-        </Box>
-
-        <Box flex="1" bg="red.700" p={5} borderRadius="md" boxShadow="md">
-          <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-            3 lata
-          </Heading>
-          <Box mt={3} color="gray.300" textAlign="center">
-            Brak celów na 3 lata.
-          </Box>
-        </Box>
-      </Flex>
+          {/* 🔹 Sekcja 2: Rok / 3 Lata */}
+          <Flex gap={6} mt={6}>
+            {["ten rok", "3 lata"].map((type) => (
+              <Box
+                key={type}
+                flex="1"
+                bg="red.700"
+                p={5}
+                borderRadius="md"
+                boxShadow="md"
+              >
+                <Heading size="lg" mb={3} color="gray.200" textAlign="center">
+                  {type}
+                </Heading>
+                <Box mt={3} color="gray.300" textAlign="center">
+                  {getGoalsByType(type).length > 0
+                    ? getGoalsByType(type).map((goal) => (
+                        <Text key={goal._id}>• {goal.text}</Text>
+                      ))
+                    : "Brak celów"}
+                </Box>
+              </Box>
+            ))}
+          </Flex>
+        </>
+      )}
     </Container>
   );
 };
