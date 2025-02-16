@@ -12,7 +12,14 @@ const CzasowePage = () => {
 
   return (
     <Container maxW="1000px" py={8}>
-      <Heading mb={6} textAlign="center" color="white" fontWeight="bold">
+      <Heading
+        mb={6}
+        textAlign="center"
+        color="white"
+        fontWeight="bold"
+        backgroundColor="red.700"
+        borderRadius="md"
+      >
         Twoje Cele
       </Heading>
 
