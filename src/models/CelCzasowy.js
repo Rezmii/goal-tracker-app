@@ -11,6 +11,7 @@ const CelCzasowySchema = new mongoose.Schema({
     enum: ["ten tydzień", "ten miesiąc", "3 miesiące", "ten rok", "3 lata"],
     required: true,
   },
+  order: { type: Number, default: 0 },
 });
 
 const CelCzasowy =
