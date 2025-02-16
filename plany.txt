@@ -1,0 +1,1 @@
+-Moze przy usuwaniu dodać wybor czy chcesz totalnie usunac czy dodac do archiwum, albo po prostu ustawić że rzeczy z tego tygodnia sie usuwaja a z innych okresów są dodawane do archiwum i przez to przy okazji tworzy się historia osiągnięć :D

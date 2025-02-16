@@ -1,7 +1,8 @@
 "use client";
 
-import { Box, Heading, Container, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Heading, Container, Flex, Spinner } from "@chakra-ui/react";
 import { useGoals } from "@/context/GoalsContext";
+import TimeGoalCard from "@/components/TimeGoal/TimeGoalCard";
 
 const CzasowePage = () => {
   const { goals, loading } = useGoals();
@@ -24,50 +25,22 @@ const CzasowePage = () => {
           {/* 🔹 Sekcja 1: Tydzień / Miesiąc / 3 Miesiące */}
           <Flex gap={6}>
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
-              <Box
+              <TimeGoalCard
                 key={type}
-                flex="1"
-                bg="red.700"
-                p={5}
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-                  {type}
-                </Heading>
-                <Box mt={3} color="gray.300" textAlign="center">
-                  {getGoalsByType(type).length > 0
-                    ? getGoalsByType(type).map((goal) => (
-                        <Text key={goal._id}>• {goal.text}</Text>
-                      ))
-                    : "Brak celów"}
-                </Box>
-              </Box>
+                title={type}
+                goals={getGoalsByType(type)}
+              />
             ))}
           </Flex>
 
           {/* 🔹 Sekcja 2: Rok / 3 Lata */}
           <Flex gap={6} mt={6}>
             {["ten rok", "3 lata"].map((type) => (
-              <Box
+              <TimeGoalCard
                 key={type}
-                flex="1"
-                bg="red.700"
-                p={5}
-                borderRadius="md"
-                boxShadow="md"
-              >
-                <Heading size="lg" mb={3} color="gray.200" textAlign="center">
-                  {type}
-                </Heading>
-                <Box mt={3} color="gray.300" textAlign="center">
-                  {getGoalsByType(type).length > 0
-                    ? getGoalsByType(type).map((goal) => (
-                        <Text key={goal._id}>• {goal.text}</Text>
-                      ))
-                    : "Brak celów"}
-                </Box>
-              </Box>
+                title={type}
+                goals={getGoalsByType(type)}
+              />
             ))}
           </Flex>
         </>
