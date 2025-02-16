@@ -1,9 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Box, Heading } from "@chakra-ui/react";
-import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
+  DndContext,
+  useSensors,
+  useSensor,
+  MouseSensor,
+  TouchSensor,
+  KeyboardSensor,
+  closestCenter,
+} from "@dnd-kit/core";
+import {
+  sortableKeyboardCoordinates,
   SortableContext,
   verticalListSortingStrategy,
   arrayMove,
@@ -11,10 +19,28 @@ import {
 import DraggableGoal from "../DraggableGoal";
 import AddGoalInput from "../AddGoalInput";
 import { useGoals } from "@/context/GoalsContext";
+import { useState, useEffect } from "react";
 
 const TimeGoalCard = ({ title, goals }) => {
   const { updateGoalsOrder } = useGoals();
   const [localGoals, setLocalGoals] = useState(goals);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8, // 🔹 Przeciąganie aktywuje się dopiero po przesunięciu kursora o 8px
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200, // 🔹 Dotykowe przeciąganie działa po 200ms trzymania palca
+        tolerance: 6,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     setLocalGoals(goals);
@@ -44,7 +70,11 @@ const TimeGoalCard = ({ title, goals }) => {
       >
         {title}
       </Heading>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+      >
         <SortableContext
           items={localGoals.map((goal) => goal._id)}
           strategy={verticalListSortingStrategy}

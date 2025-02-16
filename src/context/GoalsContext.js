@@ -64,13 +64,29 @@ export const GoalsProvider = ({ children }) => {
     }
   };
 
+  const deleteGoal = async (goalId) => {
+    try {
+      const response = await fetch(`/api/celeCzasowe/${goalId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Błąd usuwania celu");
+      }
+
+      setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
+    } catch (error) {
+      console.error("Błąd usuwania celu:", error);
+    }
+  };
+
   useEffect(() => {
     fetchGoals();
   }, []);
 
   return (
     <GoalsContext.Provider
-      value={{ goals, loading, addGoal, updateGoalsOrder }}
+      value={{ goals, loading, addGoal, updateGoalsOrder, deleteGoal }}
     >
       {children}
     </GoalsContext.Provider>
