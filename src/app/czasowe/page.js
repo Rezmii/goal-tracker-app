@@ -11,7 +11,7 @@ const CzasowePage = () => {
   const getGoalsByType = (type) => goals.filter((goal) => goal.type === type);
 
   return (
-    <Container maxW="1000px" py={8}>
+    <Container py={8}>
       <Heading
         mb={6}
         textAlign="center"

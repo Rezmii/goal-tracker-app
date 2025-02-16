@@ -20,3 +20,27 @@ export async function DELETE(req) {
     return NextResponse.json({ error: "Błąd usuwania" }, { status: 500 });
   }
 }
+
+export async function PATCH(req) {
+  try {
+    const id = req.nextUrl.pathname.split("/").pop();
+    const { important } = await req.json();
+
+    await connectToDatabase();
+
+    const updatedGoal = await CelCzasowy.findByIdAndUpdate(
+      id,
+      { important },
+      { new: true }
+    );
+
+    if (!updatedGoal) {
+      return NextResponse.json({ error: "Cel nie istnieje" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedGoal);
+  } catch (error) {
+    console.error("Błąd aktualizacji celu:", error);
+    return NextResponse.json({ error: "Błąd aktualizacji" }, { status: 500 });
+  }
+}

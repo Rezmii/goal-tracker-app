@@ -80,13 +80,42 @@ export const GoalsProvider = ({ children }) => {
     }
   };
 
+  const toggleImportant = async (goalId, currentImportant) => {
+    try {
+      const response = await fetch(`/api/celeCzasowe/${goalId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ important: !currentImportant }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Błąd aktualizacji celu");
+      }
+
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal._id === goalId ? { ...goal, important: !currentImportant } : goal
+        )
+      );
+    } catch (error) {
+      console.error("Błąd oznaczania jako ważne:", error);
+    }
+  };
+
   useEffect(() => {
     fetchGoals();
   }, []);
 
   return (
     <GoalsContext.Provider
-      value={{ goals, loading, addGoal, updateGoalsOrder, deleteGoal }}
+      value={{
+        goals,
+        loading,
+        addGoal,
+        updateGoalsOrder,
+        deleteGoal,
+        toggleImportant,
+      }}
     >
       {children}
     </GoalsContext.Provider>
