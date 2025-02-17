@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI_ENV = MONGODB_URI || "";
+const MONGODB_URI_ENV = process.env.MONGODB_URI || "";
 
 export async function connectToDatabase() {
   if (mongoose.connection.readyState >= 1) {
