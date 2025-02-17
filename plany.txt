@@ -1,1 +1,4 @@
 -Moze przy usuwaniu dodać wybor czy chcesz totalnie usunac czy dodac do archiwum, albo po prostu ustawić że rzeczy z tego tygodnia sie usuwaja a z innych okresów są dodawane do archiwum i przez to przy okazji tworzy się historia osiągnięć :D
+-Gdy nie ma celow i klikne przycisk dodaj cel to ma znikać napis Brak celow
+-Mozliwosc dodawania podpunkotw
+-Ulepszyc szate graficzna

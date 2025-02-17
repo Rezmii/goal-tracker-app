@@ -20,7 +20,7 @@ const CzasowePage = () => {
         backgroundColor="red.700"
         borderRadius="md"
       >
-        Twoje Cele
+        Moje Cele
       </Heading>
 
       {loading ? (

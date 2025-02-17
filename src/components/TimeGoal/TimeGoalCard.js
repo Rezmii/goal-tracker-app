@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import {
   DndContext,
   useSensors,
@@ -24,6 +24,7 @@ import { useState, useEffect } from "react";
 const TimeGoalCard = ({ title, goals }) => {
   const { updateGoalsOrder } = useGoals();
   const [localGoals, setLocalGoals] = useState(goals);
+  const [isEditing, setIsEditing] = useState(false);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -80,15 +81,23 @@ const TimeGoalCard = ({ title, goals }) => {
           strategy={verticalListSortingStrategy}
         >
           <Box mt={3} color="gray.300">
-            {localGoals.length > 0
-              ? localGoals.map((goal) => (
-                  <DraggableGoal key={goal._id} goal={goal} />
-                ))
-              : "Brak celów"}
+            {localGoals.length > 0 || isEditing ? (
+              localGoals.map((goal) => (
+                <DraggableGoal key={goal._id} goal={goal} />
+              ))
+            ) : (
+              <Text fontWeight="bold" fontSize="sm">
+                Brak celów
+              </Text>
+            )}
           </Box>
         </SortableContext>
       </DndContext>
-      <AddGoalInput type={title} />
+      <AddGoalInput
+        type={title}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+      />
     </Box>
   );
 };
