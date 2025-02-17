@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/my-goals-app";
+const MONGODB_URI_ENV = MONGODB_URI || "";
 
 export async function connectToDatabase() {
   if (mongoose.connection.readyState >= 1) {
@@ -9,7 +8,7 @@ export async function connectToDatabase() {
   }
 
   try {
-    await mongoose.connect(MONGODB_URI, {
+    await mongoose.connect(MONGODB_URI_ENV, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
