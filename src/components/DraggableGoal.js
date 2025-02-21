@@ -23,14 +23,14 @@ const DraggableGoal = ({ goal }) => {
       borderRadius="md"
       p={2}
       mb={2}
-      cursor="grab"
+      cursor={isEditing ? "default" : "grab"}
       bg={goal.important ? "yellow.700" : "transparent"}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
       }}
-      {...attributes}
-      {...listeners}
+      {...(!isEditing && attributes)}
+      {...(!isEditing && listeners)}
     >
       <Flex justify="space-between" align="center">
         <Text

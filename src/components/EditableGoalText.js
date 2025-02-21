@@ -21,6 +21,7 @@ const EditableGoalText = ({ initialText, onSave, onCancel }) => {
         onChange={(e) => setEditedText(e.target.value)}
         autoFocus
         onKeyDown={(e) => {
+          e.stopPropagation();
           if (e.key === "Enter") handleSave();
           if (e.key === "Escape") onCancel();
         }}
