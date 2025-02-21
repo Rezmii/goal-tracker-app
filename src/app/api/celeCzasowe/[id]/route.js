@@ -24,13 +24,14 @@ export async function DELETE(req) {
 export async function PATCH(req) {
   try {
     const id = req.nextUrl.pathname.split("/").pop();
-    const { text, important } = await req.json();
+    const { text, important, done } = await req.json();
 
     await connectToDatabase();
 
     const updateFields = {};
     if (text !== undefined) updateFields.text = text;
     if (important !== undefined) updateFields.important = important;
+    if (done !== undefined) updateFields.done = done;
 
     const updatedGoal = await CelCzasowy.findByIdAndUpdate(id, updateFields, {
       new: true,

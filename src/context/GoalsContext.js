@@ -102,6 +102,26 @@ export const GoalsProvider = ({ children }) => {
     }
   };
 
+  const toggleDone = async (goalId, newDoneState) => {
+    try {
+      const response = await fetch(`/api/celeCzasowe/${goalId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ done: !newDoneState }),
+      });
+
+      if (!response.ok) throw new Error("Błąd aktualizacji celu");
+
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal._id === goalId ? { ...goal, done: !newDoneState } : goal
+        )
+      );
+    } catch (error) {
+      console.error("Błąd oznaczania celu jako ukończony:", error);
+    }
+  };
+
   const updateGoalText = async (goalId, newText) => {
     try {
       const response = await fetch(`/api/celeCzasowe/${goalId}`, {
@@ -135,6 +155,7 @@ export const GoalsProvider = ({ children }) => {
         updateGoalsOrder,
         deleteGoal,
         toggleImportant,
+        toggleDone,
         updateGoalText,
       }}
     >

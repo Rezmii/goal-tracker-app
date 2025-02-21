@@ -1,15 +1,22 @@
 "use client";
 
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Text, Flex, Button, HStack } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
-import { FaTrash, FaStar, FaRegStar } from "react-icons/fa";
+import {
+  FaTrash,
+  FaStar,
+  FaRegStar,
+  FaRegCheckCircle,
+  FaRegCircle,
+} from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 import { useGoals } from "@/context/GoalsContext";
 import { useState } from "react";
 import EditableGoalText from "./EditableGoalText";
 
 const DraggableGoal = ({ goal }) => {
-  const { deleteGoal, toggleImportant, updateGoalText } = useGoals();
+  const { deleteGoal, toggleImportant, toggleDone, updateGoalText } =
+    useGoals();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
 
@@ -33,34 +40,55 @@ const DraggableGoal = ({ goal }) => {
       {...(!isEditing && listeners)}
     >
       <Flex justify="space-between" align="center">
-        <Text
-          fontWeight="bold"
-          fontSize="sm"
-          color={goal.important ? "white" : "gray.200"}
-        >
-          {isEditing ? (
-            <EditableGoalText
-              initialText={goal.text}
-              onSave={(newText) => {
-                updateGoalText(goal._id, newText);
-                setIsEditing(false);
-              }}
-              onCancel={() => setIsEditing(false)}
-            />
-          ) : (
-            <Text
-              as={"span"}
-              fontWeight="bold"
-              fontSize="sm"
-              color={goal.important ? "white" : "gray.200"}
-              onClick={() => setIsEditing(true)}
-              cursor="pointer"
-              _hover={{ color: "gray.300" }}
-            >
-              {goal.text}
-            </Text>
-          )}
-        </Text>
+        <HStack>
+          <Button
+            aria-label="Zaznacz jako ukończone"
+            icon={goal.done ? <FaRegCheckCircle /> : <FaRegCircle />}
+            size="xs"
+            colorPallete={goal.done ? "green" : "gray"}
+            color="white"
+            variant="ghost"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleDone(goal._id, goal.done);
+            }}
+            data-dndkit-no-drag
+            _hover={{
+              bg: "none",
+              color: "gray",
+            }}
+          >
+            {goal.done ? <FaRegCheckCircle /> : <FaRegCircle />}
+          </Button>
+          <Text
+            fontWeight="bold"
+            fontSize="sm"
+            color={goal.important ? "white" : "gray.200"}
+          >
+            {isEditing ? (
+              <EditableGoalText
+                initialText={goal.text}
+                onSave={(newText) => {
+                  updateGoalText(goal._id, newText);
+                  setIsEditing(false);
+                }}
+                onCancel={() => setIsEditing(false)}
+              />
+            ) : (
+              <Text
+                as={"span"}
+                fontWeight="bold"
+                fontSize="sm"
+                color={goal.important ? "white" : "gray.200"}
+                onClick={() => setIsEditing(true)}
+                cursor="pointer"
+                _hover={{ color: "gray.300" }}
+              >
+                {goal.text}
+              </Text>
+            )}
+          </Text>
+        </HStack>
         <Flex gap={2}>
           <Button
             aria-label="Oznacz jako ważne"
