@@ -19,6 +19,7 @@ const CzasowePage = () => {
         fontWeight="bold"
         backgroundColor="red.700"
         borderRadius="md"
+        boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
       >
         Moje Cele
       </Heading>
@@ -34,7 +35,9 @@ const CzasowePage = () => {
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
               <TimeGoalCard
                 key={type}
-                title={type}
+                title={
+                  type === "3 miesiące" ? type + " (styczeń-marzec)" : type
+                }
                 goals={getGoalsByType(type)}
               />
             ))}

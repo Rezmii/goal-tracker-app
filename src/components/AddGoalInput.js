@@ -44,7 +44,10 @@ const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
             <Button
               size="sm"
               colorPallete="gray"
-              onClick={() => setIsEditing(false)}
+              onClick={() => {
+                setIsEditing(false);
+                setGoalText("");
+              }}
             >
               ✖
             </Button>

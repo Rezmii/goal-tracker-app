@@ -102,6 +102,26 @@ export const GoalsProvider = ({ children }) => {
     }
   };
 
+  const updateGoalText = async (goalId, newText) => {
+    try {
+      const response = await fetch(`/api/celeCzasowe/${goalId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: newText }),
+      });
+
+      if (!response.ok) throw new Error("Błąd aktualizacji celu");
+
+      setGoals((prevGoals) =>
+        prevGoals.map((goal) =>
+          goal._id === goalId ? { ...goal, text: newText } : goal
+        )
+      );
+    } catch (error) {
+      console.error("Błąd edytowania celu:", error);
+    }
+  };
+
   useEffect(() => {
     fetchGoals();
   }, []);
@@ -115,6 +135,7 @@ export const GoalsProvider = ({ children }) => {
         updateGoalsOrder,
         deleteGoal,
         toggleImportant,
+        updateGoalText,
       }}
     >
       {children}

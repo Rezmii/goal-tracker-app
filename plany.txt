@@ -1,4 +1,6 @@
 -Moze przy usuwaniu dodać wybor czy chcesz totalnie usunac czy dodac do archiwum, albo po prostu ustawić że rzeczy z tego tygodnia sie usuwaja a z innych okresów są dodawane do archiwum i przez to przy okazji tworzy się historia osiągnięć :D
--Gdy nie ma celow i klikne przycisk dodaj cel to ma znikać napis Brak celow
 -Mozliwosc dodawania podpunkotw
 -Ulepszyc szate graficzna
+-te cele rzadko sie zmieniaja wiec spoko zeby przy otwarciu strony przed fetchowaniem pokazywaly sie strony ktore byly poprzednio (tak bedzie szybciej)
+-dodać połączenia strzałkami celów między sekcjami i żeby te połączone sekcje po najechaniu na którąś z połączeń podświetlało cały łańcuch
+-jesli chodzi o cele ogolne i trzy pozimowe to zeby mozna bylo dac gwiazdke na jakąś całą sekcje i wtedy ona będzię się wyświetlać w zakładce głównej.

@@ -24,15 +24,17 @@ export async function DELETE(req) {
 export async function PATCH(req) {
   try {
     const id = req.nextUrl.pathname.split("/").pop();
-    const { important } = await req.json();
+    const { text, important } = await req.json();
 
     await connectToDatabase();
 
-    const updatedGoal = await CelCzasowy.findByIdAndUpdate(
-      id,
-      { important },
-      { new: true }
-    );
+    const updateFields = {};
+    if (text !== undefined) updateFields.text = text;
+    if (important !== undefined) updateFields.important = important;
+
+    const updatedGoal = await CelCzasowy.findByIdAndUpdate(id, updateFields, {
+      new: true,
+    });
 
     if (!updatedGoal) {
       return NextResponse.json({ error: "Cel nie istnieje" }, { status: 404 });

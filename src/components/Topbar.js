@@ -12,6 +12,7 @@ const Topbar = () => {
       p={4}
       w="calc(100% - 250px)"
       ml="250px"
+      boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
     >
       <Text fontSize="xl" fontWeight="bold">
         My Goal App
