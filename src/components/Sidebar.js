@@ -6,6 +6,7 @@ import {
   FaClock,
   FaLayerGroup,
   FaClipboardList,
+  FaArchive,
 } from "react-icons/fa";
 import Link from "next/link";
 
@@ -15,6 +16,7 @@ const Sidebar = () => {
     { label: "Czasowe", icon: <FaClock />, path: "/czasowe" },
     { label: "3 poziomy", icon: <FaLayerGroup />, path: "/trzy-poziomy" },
     { label: "Ogólne", icon: <FaClipboardList />, path: "/ogolne" },
+    { label: "Archiwum", icon: <FaArchive />, path: "/archiwum" },
   ];
 
   return (

@@ -4,3 +4,4 @@
 -te cele rzadko sie zmieniaja wiec spoko zeby przy otwarciu strony przed fetchowaniem pokazywaly sie strony ktore byly poprzednio (tak bedzie szybciej)
 -dodać połączenia strzałkami celów między sekcjami i żeby te połączone sekcje po najechaniu na którąś z połączeń podświetlało cały łańcuch
 -jesli chodzi o cele ogolne i trzy pozimowe to zeby mozna bylo dac gwiazdke na jakąś całą sekcje i wtedy ona będzię się wyświetlać w zakładce głównej.
+- moze w tygodniowych celach (i moze tez miesiecznych) po kliknieciu w przycisk rozwija sie lista pojedynczych dni ktore moge wypelnic zeby zobaczyc co zrobic zeby faktycznie spelnic ten cel

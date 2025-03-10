@@ -3,7 +3,6 @@
 import { Box, Text, Flex, Button, HStack } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import {
-  FaTrash,
   FaStar,
   FaRegStar,
   FaRegCheckCircle,
@@ -13,10 +12,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { useGoals } from "@/context/GoalsContext";
 import { useState } from "react";
 import EditableGoalText from "./EditableGoalText";
+import DeleteButton from "./DeleteButton";
 
-const DraggableGoal = ({ goal }) => {
-  const { deleteGoal, toggleImportant, toggleDone, updateGoalText } =
-    useGoals();
+const DraggableGoal = ({ goal, type }) => {
+  const { toggleImportant, toggleDone, updateGoalText } = useGoals();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
 
@@ -64,6 +63,7 @@ const DraggableGoal = ({ goal }) => {
             fontWeight="bold"
             fontSize="sm"
             color={goal.important ? "white" : "gray.200"}
+            textDecoration={goal.done ? "line-through" : "none"}
           >
             {isEditing ? (
               <EditableGoalText
@@ -108,18 +108,10 @@ const DraggableGoal = ({ goal }) => {
           >
             {goal.important ? <FaStar /> : <FaRegStar />}
           </Button>
-          <Button
-            size="xs"
-            colorPallete="red"
-            variant="ghost"
-            onClick={() => {
-              deleteGoal(goal._id);
-            }}
-            data-dndkit-no-drag
-            _hover={{ bg: "red.800", color: "white" }}
-          >
-            <FaTrash />
-          </Button>
+          <DeleteButton
+            goal_id={goal._id}
+            confirm={["ten miesiąc", "ten rok"].includes(goal.type)}
+          />
         </Flex>
       </Flex>
     </Box>

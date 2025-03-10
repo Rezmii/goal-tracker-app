@@ -146,6 +146,20 @@ export const GoalsProvider = ({ children }) => {
     fetchGoals();
   }, []);
 
+  const archiveGoal = async (goal_id) => {
+    try {
+      const res = await fetch(`/api/celeCzasowe/${goal_id}`, {
+        method: "POST",
+      });
+
+      if (!res.ok) throw new Error("Błąd archiwizacji celu");
+
+      setGoals((prev) => prev.filter((goal) => goal._id !== goal_id)); // Usuń z aktualnej listy
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <GoalsContext.Provider
       value={{
@@ -157,6 +171,7 @@ export const GoalsProvider = ({ children }) => {
         toggleImportant,
         toggleDone,
         updateGoalText,
+        archiveGoal,
       }}
     >
       {children}
