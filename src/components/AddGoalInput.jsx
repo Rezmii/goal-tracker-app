@@ -15,6 +15,7 @@ const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
       text: capitalizeFirstLetter(goalText),
       date_finish: new Date().toISOString(),
       type,
+      subtasks: [],
     });
     setGoalText("");
     setIsEditing(false);

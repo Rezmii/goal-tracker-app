@@ -6,7 +6,7 @@ await connectToDatabase();
 
 export async function GET() {
   try {
-    const cele = await CelCzasowy.find({}).sort({ type: 1, order: 1 }); // 🔹 Sortowanie po typie i kolejności
+    const cele = await CelCzasowy.find({}).sort({ type: 1, order: 1 });
     return NextResponse.json(cele);
   } catch (error) {
     return NextResponse.json(

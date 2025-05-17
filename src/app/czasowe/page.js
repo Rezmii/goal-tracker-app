@@ -21,7 +21,7 @@ const CzasowePage = () => {
         borderRadius="md"
         boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
       >
-        Moje Cele
+        Cele Czasowe
       </Heading>
 
       {loading ? (

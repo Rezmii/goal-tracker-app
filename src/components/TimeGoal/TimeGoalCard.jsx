@@ -60,20 +60,16 @@ const TimeGoalCard = ({ title, goals }) => {
   };
 
   return (
-    <Box
-      flex="1"
-      bg="red.700"
-      p={5}
-      borderRadius="md"
-      boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
-    >
+    <Box flex="1" bg="#7F0F0F" p={5} borderRadius="lg" boxShadow="lg">
       <Heading
         size="lg"
+        p={1}
         mb={3}
         color="gray.200"
         textAlign="center"
         backgroundColor="black"
-        borderRadius="md"
+        borderRadius="lg"
+        boxShadow="sm"
       >
         {title}
       </Heading>

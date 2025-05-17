@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+const SubtaskSchema = new mongoose.Schema({
+  text: { type: String, required: true },
+  done: { type: Boolean, default: false },
+});
+
 const CelCzasowySchema = new mongoose.Schema({
   text: { type: String, required: true },
   done: { type: Boolean, default: false },
@@ -12,6 +17,7 @@ const CelCzasowySchema = new mongoose.Schema({
     required: true,
   },
   order: { type: Number, default: 0 },
+  subtasks: [SubtaskSchema],
 });
 
 const CelCzasowy =

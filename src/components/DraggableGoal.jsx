@@ -1,20 +1,31 @@
 "use client";
 
-import { Box, Text, Flex, Button, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Button,
+  HStack,
+  VStack,
+  Input,
+  Checkbox,
+} from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import {
   FaStar,
   FaRegStar,
   FaRegCheckCircle,
   FaRegCircle,
+  FaPlus,
 } from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 import { useGoals } from "@/context/GoalsContext";
 import { useState } from "react";
 import EditableGoalText from "./EditableGoalText";
 import DeleteButton from "./DeleteButton";
+import SubtaskList from "./SubtasksList";
 
-const DraggableGoal = ({ goal, type }) => {
+const DraggableGoal = ({ goal }) => {
   const { toggleImportant, toggleDone, updateGoalText } = useGoals();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
@@ -24,13 +35,16 @@ const DraggableGoal = ({ goal, type }) => {
   return (
     <Box
       ref={setNodeRef}
-      border="1px solid"
-      borderColor={goal.important ? "yellow.400" : "gray.300"}
-      borderRadius="md"
-      p={2}
-      mb={2}
+      borderRadius="xl"
+      boxShadow="md"
+      transition="all 0.2s"
+      p={4}
+      mb={3}
       cursor={isEditing ? "default" : "grab"}
-      bg={goal.important ? "yellow.700" : "transparent"}
+      border={goal.important ? "2px solid" : ""}
+      borderColor={goal.important ? "yellow.600" : ""}
+      bg={"red.700"}
+      _hover={{ bg: "#C31717" }}
       style={{
         transform: CSS.Transform.toString(transform),
         transition,
@@ -61,7 +75,8 @@ const DraggableGoal = ({ goal, type }) => {
           </Button>
           <Text
             fontWeight="bold"
-            fontSize="sm"
+            fontSize="md"
+            whiteSpace="pre-wrap"
             color={goal.important ? "white" : "gray.200"}
             textDecoration={goal.done ? "line-through" : "none"}
           >
@@ -110,10 +125,17 @@ const DraggableGoal = ({ goal, type }) => {
           </Button>
           <DeleteButton
             goal_id={goal._id}
-            confirm={["ten miesiąc", "ten rok"].includes(goal.type)}
+            confirm={[
+              "ten miesiąc",
+              "3 miesiące",
+              "ten rok",
+              "3 lata",
+            ].includes(goal.type)}
           />
         </Flex>
       </Flex>
+
+      <SubtaskList goal={goal} />
     </Box>
   );
 };

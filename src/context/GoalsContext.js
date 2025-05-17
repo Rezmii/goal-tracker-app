@@ -12,6 +12,7 @@ export const GoalsProvider = ({ children }) => {
     try {
       const response = await fetch("/api/celeCzasowe");
       const data = await response.json();
+      console.log(data);
       setGoals(data);
     } catch (error) {
       console.error("Błąd pobierania celów:", error);
@@ -160,6 +161,37 @@ export const GoalsProvider = ({ children }) => {
     }
   };
 
+  const addSubtask = async (goalId, subtaskText) => {
+    await fetch(`/api/celeCzasowe/${goalId}/subtasks`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: subtaskText }),
+    });
+    fetchGoals();
+  };
+
+  const deleteSubtask = async (goalId, subtaskIndex) => {
+    try {
+      await fetch(`/api/celeCzasowe/${goalId}/subtasks`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ index: subtaskIndex }),
+      });
+      fetchGoals();
+    } catch (error) {
+      console.error("Błąd usuwania subtaska:", error);
+    }
+  };
+
+  const toggleSubtaskDone = async (goalId, subtaskIndex, currentStatus) => {
+    await fetch(`/api/celeCzasowe/${goalId}/subtasks`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ index: subtaskIndex, done: !currentStatus }),
+    });
+    fetchGoals();
+  };
+
   return (
     <GoalsContext.Provider
       value={{
@@ -172,6 +204,9 @@ export const GoalsProvider = ({ children }) => {
         toggleDone,
         updateGoalText,
         archiveGoal,
+        addSubtask,
+        toggleSubtaskDone,
+        deleteSubtask,
       }}
     >
       {children}

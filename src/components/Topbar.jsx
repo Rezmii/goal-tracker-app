@@ -15,7 +15,7 @@ const Topbar = () => {
       boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
     >
       <Text fontSize="xl" fontWeight="bold">
-        My Goal App
+        Moje Cele
       </Text>
     </Flex>
   );
