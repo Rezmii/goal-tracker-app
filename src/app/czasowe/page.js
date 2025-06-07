@@ -33,7 +33,7 @@ const CzasowePage = () => {
               <TimeGoalCard
                 key={type}
                 title={
-                  type === "3 miesiące" ? type + " (styczeń-marzec)" : type
+                  type === "3 miesiące" ? type + " (czerwiec-sierpień)" : type
                 }
                 goals={getGoalsByType(type)}
               />

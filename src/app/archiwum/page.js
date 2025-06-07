@@ -1,51 +1,76 @@
+// src/app/archiwum/page.js
+
 "use client";
 
-import { Container, Heading, Flex, Box, Text, Spinner } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Flex,
+  Box,
+  Text,
+  Spinner,
+  SimpleGrid, // ZMIANA: Użycie SimpleGrid dla lepszego układu
+  Icon,
+} from "@chakra-ui/react";
 import { useArchiveGoals } from "@/context/ArchiveGoalsContext";
+import { FaArchive } from "react-icons/fa"; // ZMIANA: Ikona dla zarchiwizowanych celów
 
 const ArchiwumPage = () => {
   const { archiveGoals, loadingArchive } = useArchiveGoals();
 
   return (
-    <Container py={8}>
+    // ZMIANA: Ujednolicony kontener
+    <Container maxW="container.xl" p={0}>
+      {/* ZMIANA: Nagłówek dopasowany do reszty aplikacji */}
       <Heading
-        mb={6}
-        textAlign="center"
+        size="2xl"
+        mb={8}
+        textAlign="left"
         color="white"
         fontWeight="bold"
-        backgroundColor="#7c0f0f"
-        borderRadius="md"
-        boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
       >
         Archiwum Celów
       </Heading>
 
       {loadingArchive ? (
-        <Flex justify="center">
+        <Flex justify="center" align="center" h="50vh">
           <Spinner size="xl" color="red.500" />
         </Flex>
       ) : (
-        <Flex wrap="wrap" gap={4}>
-          {archiveGoals.map((goal) => (
-            <Box
-              key={goal._id}
-              bg="gray.800"
-              p={4}
-              borderRadius="md"
-              w="100%"
-              maxW="400px"
-              boxShadow="md"
-              borderLeft="4px solid red"
-            >
-              <Text fontWeight="bold" fontSize="md" color="gray.200">
-                {goal.text}
-              </Text>
-              <Text fontSize="xs" mt={2} color="gray.400">
-                Ukończono: {new Date(goal.date_finish).toLocaleDateString()}
-              </Text>
-            </Box>
-          ))}
-        </Flex>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={6}>
+          {archiveGoals.length > 0 ? (
+            archiveGoals.map((goal) => (
+              <Box
+                key={goal._id}
+                bg="gray.800"
+                p={4}
+                borderRadius="lg"
+                boxShadow="md"
+                borderLeft="4px solid"
+                borderColor="red.400"
+                transition="background 0.2s ease-in-out"
+                _hover={{
+                  bg: "gray.700",
+                  borderColor: "red.500",
+                }}
+              >
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Text fontWeight="bold" fontSize="md" color="gray.200">
+                    {goal.text}
+                  </Text>
+                </Flex>
+                <Text fontSize="xs" mt={2} color="gray.400">
+                  Data ukończenia:{" "}
+                  {new Date(goal.date_finish).toLocaleDateString()}
+                </Text>
+              </Box>
+            ))
+          ) : (
+            <Text color="gray.500" fontStyle="italic">
+              Twoje archiwum jest puste.
+            </Text>
+          )}
+        </SimpleGrid>
       )}
     </Container>
   );

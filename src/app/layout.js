@@ -18,8 +18,15 @@ export default function RootLayout({ children }) {
                 <Sidebar />
                 <Box flex="1" display="flex" flexDirection="column">
                   <Topbar />
-                  {/* ZMIANA: Bardziej neutralne tło dla całej aplikacji */}
-                  <Box flex="1" bg="gray.900" color="white" ml="250px" p={8}>
+
+                  <Box
+                    overflow="auto"
+                    flex="1"
+                    bg="gray.900"
+                    color="white"
+                    ml="250px"
+                    p={8}
+                  >
                     {children}
                   </Box>
                 </Box>
