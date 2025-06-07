@@ -1,54 +1,56 @@
+// src/components/DeleteButton.jsx
+
 "use client";
 
 import React, { useState } from "react";
-import { Button, Dialog } from "@chakra-ui/react";
-import { FaTrash } from "react-icons/fa";
+import { Button, Dialog, VStack, Text } from "@chakra-ui/react"; // Dodano VStack i Text
+import { FaTrash, FaArchive } from "react-icons/fa"; // Dodano FaArchive
 import { useGoals } from "@/context/GoalsContext";
 
 const DeleteButton = ({ goal_id, confirm = false }) => {
   const { deleteGoal, archiveGoal } = useGoals();
   const [isOpen, setIsOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleDelete = async () => {
-    setIsDeleting(true);
+    setIsProcessing(true);
     await deleteGoal(goal_id);
-    setIsDeleting(false);
+    setIsProcessing(false);
     setIsOpen(false);
   };
 
   const handleArchive = async () => {
-    setIsDeleting(true);
+    setIsProcessing(true);
     await archiveGoal(goal_id);
-    setIsDeleting(false);
+    setIsProcessing(false);
     setIsOpen(false);
   };
 
   const handleClick = (e) => {
-    e.stopPropagation(); // Zapobiega dragowaniu
+    e.stopPropagation();
     if (confirm) {
-      setIsOpen(true); // Otwiera dialog, jeśli confirm === true
+      setIsOpen(true);
     } else {
-      deleteGoal(goal_id); // Usuwa od razu, jeśli nie potrzeba potwierdzenia
+      // Dla celów, które nie wymagają potwierdzenia, od razu archiwizujemy
+      handleArchive();
     }
   };
 
   return (
     <>
-      {/* 🔴 Przycisk usuwania */}
       <Button
         size="xs"
-        colorScheme="red"
         variant="ghost"
         onClick={handleClick}
         data-dndkit-no-drag
-        _hover={{ bg: "red.800", color: "white" }}
-        isLoading={isDeleting}
+        // ZMIANA: Subtelniejszy wygląd przycisku i lepszy hover
+        color="gray.400"
+        _hover={{ bg: "gray.500", color: "red.400" }}
+        isLoading={isProcessing && !isOpen} // Pokaż spinner tylko przy natychmiastowym usuwaniu
       >
         <FaTrash />
       </Button>
 
-      {/* 🔴 Dialog potwierdzający */}
       <Dialog.Root
         open={isOpen}
         onOpenChange={(e) => setIsOpen(e.open)}
@@ -56,40 +58,44 @@ const DeleteButton = ({ goal_id, confirm = false }) => {
       >
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content bg="gray.900" color="white">
+          <Dialog.Content
+            bg="gray.800"
+            color="white"
+            borderRadius="lg"
+            maxW="sm"
+          >
             <Dialog.Header>
-              <Dialog.Title>Usuń cel lub dodaj go do archiwum</Dialog.Title>
+              <Dialog.Title>Potwierdzenie</Dialog.Title>
             </Dialog.Header>
+            {/* ZMIANA: Dodatkowe informacje dla użytkownika */}
+            <Dialog.Body>
+              <Text color="gray.300">
+                Możesz trwale usunąć ten cel lub przenieść go do archiwum, aby
+                zachować go w historii.
+              </Text>
+            </Dialog.Body>
             <Dialog.Footer>
-              <Dialog.CloseTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  colorPalette="gray"
-                  color={"white"}
-                  _hover={{ color: "black" }}
-                >
-                  Anuluj
-                </Button>
-              </Dialog.CloseTrigger>
+              <Button variant="ghost" onClick={() => setIsOpen(false)}>
+                Anuluj
+              </Button>
+              {/* ZMIANA: Lepsze style przycisków akcji */}
               <Button
-                size="sm"
-                colorPalette={"white"}
+                variant="outline"
+                leftIcon={<FaArchive />}
                 onClick={handleArchive}
                 ml={3}
-                isLoading={isDeleting}
-                variant={"surface"}
+                isLoading={isProcessing}
+                _hover={{ bg: "whiteAlpha.200" }}
               >
-                Dodaj do archiwum
+                Archiwizuj
               </Button>
               <Button
-                size="sm"
-                colorPalette={"red"}
+                colorScheme="red"
                 onClick={handleDelete}
                 ml={3}
-                isLoading={isDeleting}
+                isLoading={isProcessing}
               >
-                Usuń
+                Usuń trwale
               </Button>
             </Dialog.Footer>
           </Dialog.Content>

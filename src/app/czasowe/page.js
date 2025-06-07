@@ -1,3 +1,5 @@
+// src/app/czasowe/page.js
+
 "use client";
 
 import { Heading, Container, Flex, Spinner } from "@chakra-ui/react";
@@ -6,31 +8,26 @@ import TimeGoalCard from "@/components/TimeGoal/TimeGoalCard";
 
 const CzasowePage = () => {
   const { goals, loading } = useGoals();
-
-  // 🔹 Filtrowanie celów według sekcji
   const getGoalsByType = (type) => goals.filter((goal) => goal.type === type);
 
   return (
-    <Container py={8}>
+    <Container maxW="container.xl" p={0}>
       <Heading
-        mb={6}
-        textAlign="center"
+        size="2xl"
+        mb={8}
+        textAlign="left"
         color="white"
         fontWeight="bold"
-        backgroundColor="red.700"
-        borderRadius="md"
-        boxShadow="5px 5px 15px rgba(0, 0, 0, 0.5)"
       >
         Cele Czasowe
       </Heading>
 
       {loading ? (
-        <Flex justify="center">
+        <Flex justify="center" align="center" h="50vh">
           <Spinner size="xl" color="red.500" />
         </Flex>
       ) : (
-        <>
-          {/* 🔹 Sekcja 1: Tydzień / Miesiąc / 3 Miesiące */}
+        <Flex direction="column" gap={8}>
           <Flex gap={6}>
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
               <TimeGoalCard
@@ -42,9 +39,7 @@ const CzasowePage = () => {
               />
             ))}
           </Flex>
-
-          {/* 🔹 Sekcja 2: Rok / 3 Lata */}
-          <Flex gap={6} mt={6}>
+          <Flex gap={6}>
             {["ten rok", "3 lata"].map((type) => (
               <TimeGoalCard
                 key={type}
@@ -53,7 +48,7 @@ const CzasowePage = () => {
               />
             ))}
           </Flex>
-        </>
+        </Flex>
       )}
     </Container>
   );

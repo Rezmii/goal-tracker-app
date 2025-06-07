@@ -1,3 +1,5 @@
+// src/components/TimeGoal/TimeGoalCard.jsx
+
 "use client";
 
 import { Box, Heading, Text } from "@chakra-ui/react";
@@ -28,15 +30,10 @@ const TimeGoalCard = ({ title, goals }) => {
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 8, // 🔹 Przeciąganie aktywuje się dopiero po przesunięciu kursora o 8px
-      },
+      activationConstraint: { distance: 8 },
     }),
     useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200, // 🔹 Dotykowe przeciąganie działa po 200ms trzymania palca
-        tolerance: 6,
-      },
+      activationConstraint: { delay: 200, tolerance: 6 },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -60,16 +57,17 @@ const TimeGoalCard = ({ title, goals }) => {
   };
 
   return (
-    <Box flex="1" bg="#7F0F0F" p={5} borderRadius="lg" boxShadow="lg">
+    // ZMIANA: Nowy, subtelniejszy wygląd karty
+    <Box flex="1" bg="gray.800" p={5} borderRadius="lg" boxShadow="md">
+      {/* ZMIANA: Uproszczony nagłówek karty, bez tła */}
       <Heading
-        size="lg"
-        p={1}
-        mb={3}
-        color="gray.200"
+        size="md"
+        mb={4}
+        color="gray.300"
         textAlign="center"
-        backgroundColor="black"
-        borderRadius="lg"
-        boxShadow="sm"
+        fontWeight="semibold"
+        textTransform="uppercase"
+        letterSpacing="wide"
       >
         {title}
       </Heading>
@@ -82,13 +80,18 @@ const TimeGoalCard = ({ title, goals }) => {
           items={localGoals.map((goal) => goal._id)}
           strategy={verticalListSortingStrategy}
         >
-          <Box mt={3} color="gray.300">
+          <Box minH="40px" color="gray.300">
             {localGoals.length > 0 || isEditing ? (
               localGoals.map((goal) => (
                 <DraggableGoal key={goal._id} goal={goal} />
               ))
             ) : (
-              <Text fontWeight="bold" fontSize="sm">
+              <Text
+                textAlign="center"
+                fontSize="sm"
+                color="gray.500"
+                fontStyle="italic"
+              >
                 Brak celów
               </Text>
             )}

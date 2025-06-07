@@ -1,7 +1,10 @@
+// src/components/EditableGoalText.jsx
+
 "use client";
 
 import { useState } from "react";
-import { Flex, Input, Button } from "@chakra-ui/react";
+// ZMIANA: Usunięto IconButton, wracamy do Button
+import { HStack, Input, Button } from "@chakra-ui/react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 const EditableGoalText = ({ initialText, onSave, onCancel }) => {
@@ -9,30 +12,52 @@ const EditableGoalText = ({ initialText, onSave, onCancel }) => {
 
   const handleSave = () => {
     if (editedText.trim()) {
-      onSave(editedText);
+      onSave(editedText.trim());
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    e.stopPropagation();
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSave();
+    }
+    if (e.key === "Escape") {
+      onCancel();
     }
   };
 
   return (
-    <Flex flex="1" align="center" as="span">
+    <HStack flex="1" as="span" spacing={2}>
       <Input
         size="sm"
         value={editedText}
         onChange={(e) => setEditedText(e.target.value)}
         autoFocus
-        onKeyDown={(e) => {
-          e.stopPropagation();
-          if (e.key === "Enter") handleSave();
-          if (e.key === "Escape") onCancel();
-        }}
+        onKeyDown={handleKeyDown}
+        bg="gray.900"
+        borderColor="gray.600"
+        focusBorderColor="red.500"
+        _hover={{ borderColor: "gray.500" }}
       />
-      <Button size="xs" colorScheme="green" ml={2} onClick={handleSave}>
+      {/* ZMIANA: Użycie standardowych przycisków zamiast IconButton */}
+      <Button
+        size="sm"
+        aria-label="Zapisz zmiany"
+        colorScheme="red"
+        onClick={handleSave}
+      >
         <FaCheck />
       </Button>
-      <Button size="xs" colorScheme="gray" ml={1} onClick={onCancel}>
+      <Button
+        size="sm"
+        aria-label="Anuluj edycję"
+        variant="ghost"
+        onClick={onCancel}
+      >
         <FaTimes />
       </Button>
-    </Flex>
+    </HStack>
   );
 };
 

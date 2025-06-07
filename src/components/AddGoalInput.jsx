@@ -1,14 +1,18 @@
+// src/components/AddGoalInput.jsx
+
 "use client";
 
 import { useState } from "react";
-import { Box, Button, HStack, Input, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, VStack, Icon } from "@chakra-ui/react";
+import { FaPlus } from "react-icons/fa";
 import { useGoals } from "@/context/GoalsContext";
 
 const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
   const { addGoal } = useGoals();
   const [goalText, setGoalText] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!goalText.trim()) return;
 
     addGoal({
@@ -26,37 +30,58 @@ const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
   };
 
   return (
-    <Box mt={2}>
+    <Box mt={4} w="100%">
       {isEditing ? (
-        <VStack spacing={2}>
+        <VStack as="form" onSubmit={handleSubmit} spacing={3} w="100%">
           <Input
             size="sm"
             placeholder="Wpisz nowy cel..."
-            _placeholder={{ color: "gray.300" }}
             value={goalText}
             onChange={(e) => setGoalText(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSubmit(e);
+              if (e.key === "Escape") setIsEditing(false);
+            }}
             autoFocus
+            // ZMIANA: Dopasowanie inputu do nowego designu
+            bg="gray.900"
+            borderColor="gray.600"
+            focusBorderColor="red.500"
+            _hover={{ borderColor: "gray.500" }}
           />
-          <HStack mr="auto" spaceX={1}>
-            <Button size="sm" colorPallete="green" onClick={handleSubmit}>
-              ✔ Dodaj cel
-            </Button>
+          <HStack w="100%" justifyContent="flex-end">
             <Button
               size="sm"
-              colorPallete="gray"
+              variant="ghost"
               onClick={() => {
                 setIsEditing(false);
                 setGoalText("");
               }}
             >
-              ✖
+              Anuluj
+            </Button>
+            <Button
+              type="submit"
+              size="sm"
+              // ZMIANA: Użycie czerwonego akcentu
+              colorScheme="red"
+            >
+              Dodaj cel
             </Button>
           </HStack>
         </VStack>
       ) : (
-        <Button size="sm" onClick={() => setIsEditing(true)}>
-          Dodaj cel
+        // ZMIANA: Przycisk "Dodaj cel" dopasowany do nowego stylu
+        <Button
+          size="sm"
+          variant="ghost"
+          w="full"
+          leftIcon={<Icon as={FaPlus} />}
+          color="gray.400"
+          _hover={{ bg: "gray.700", color: "white" }}
+          onClick={() => setIsEditing(true)}
+        >
+          Dodaj nowy cel
         </Button>
       )}
     </Box>
