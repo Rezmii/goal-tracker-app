@@ -33,17 +33,15 @@ const Subtask = ({ subtask, goalId, index }) => {
           variant="ghost"
           onClick={() => toggleSubtaskDone(goalId, index, subtask.done)}
           data-dndkit-no-drag
-          color={subtask.done ? "green.300" : "gray.400"}
-          _hover={{
-            bg: "whiteAlpha.200",
-          }}
+          color={subtask.done ? "red.400" : "gray.400"}
+          _hover={{ bg: "gray.500", color: "red.300" }}
         >
           {subtask.done ? <FaRegCheckCircle /> : <FaRegCircle />}
         </Button>
 
         <Text
           fontSize="sm"
-          color={subtask.done ? "gray.500" : "gray.200"}
+          color={subtask.done ? "red.400" : "gray.100"}
           textDecoration={subtask.done ? "line-through" : "none"}
         >
           {subtask.text}

@@ -56,6 +56,45 @@ const TimeGoalCard = ({ title, goals }) => {
     updateGoalsOrder(title, updatedGoals);
   };
 
+  const getDynamicTitle = (title) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // 0-11
+
+    switch (title) {
+      case "3 miesiące": {
+        const monthNames = [
+          "styczeń",
+          "luty",
+          "marzec",
+          "kwiecień",
+          "maj",
+          "czerwiec",
+          "lipiec",
+          "sierpień",
+          "wrzesień",
+          "październik",
+          "listopad",
+          "grudzień",
+        ];
+        const currentQuarter = Math.floor(month / 3);
+        const startMonth = monthNames[currentQuarter * 3];
+        const endMonth = monthNames[currentQuarter * 3 + 2];
+        const capitalizedStartMonth =
+          startMonth.charAt(0).toUpperCase() + startMonth.slice(1);
+        return `${title} (${capitalizedStartMonth}-${endMonth})`;
+      }
+      case "ten rok":
+        return `ten rok (${year})`;
+      case "3 lata":
+        return `3 lata (${year} - ${year + 2})`;
+      default:
+        return title;
+    }
+  };
+
+  const displayTitle = getDynamicTitle(title);
+
   return (
     // ZMIANA: Nowy, subtelniejszy wygląd karty
     <Box flex="1" bg="gray.800" p={5} borderRadius="lg" boxShadow="md">
@@ -69,7 +108,7 @@ const TimeGoalCard = ({ title, goals }) => {
         textTransform="uppercase"
         letterSpacing="wide"
       >
-        {title}
+        {displayTitle}
       </Heading>
       <DndContext
         collisionDetection={closestCenter}
