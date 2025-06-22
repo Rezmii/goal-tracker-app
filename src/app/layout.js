@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 import { GoalsProvider } from "@/context/GoalsContext";
 import { ArchiveGoalsProvider } from "@/context/ArchiveGoalsContext";
+import { ThreeLevelGoalsProvider } from "@/context/ThreeLevelGoalsContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -14,23 +15,17 @@ export default function RootLayout({ children }) {
         <Provider>
           <GoalsProvider>
             <ArchiveGoalsProvider>
-              <Flex h="100vh">
-                <Sidebar />
-                <Box flex="1" display="flex" flexDirection="column">
-                  <Topbar />
-
-                  <Box
-                    overflow="auto"
-                    flex="1"
-                    bg="gray.900"
-                    color="white"
-                    ml="250px"
-                    p={8}
-                  >
-                    {children}
+              <ThreeLevelGoalsProvider>
+                <Flex h="100vh">
+                  <Sidebar />
+                  <Box flex="1" display="flex" flexDirection="column">
+                    <Topbar />
+                    <Box flex="1" bg="gray.900" color="white" ml="250px" p={8}>
+                      {children}
+                    </Box>
                   </Box>
-                </Box>
-              </Flex>
+                </Flex>
+              </ThreeLevelGoalsProvider>
             </ArchiveGoalsProvider>
           </GoalsProvider>
         </Provider>

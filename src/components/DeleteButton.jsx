@@ -3,25 +3,27 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Dialog, VStack, Text } from "@chakra-ui/react"; // Dodano VStack i Text
-import { FaTrash, FaArchive } from "react-icons/fa"; // Dodano FaArchive
-import { useGoals } from "@/context/GoalsContext";
+import { Button, Dialog, VStack, Text } from "@chakra-ui/react";
+import { FaTrash, FaArchive } from "react-icons/fa";
 
-const DeleteButton = ({ goal_id, confirm = false }) => {
-  const { deleteGoal, archiveGoal } = useGoals();
+const DeleteButton = ({ goal_id, onDelete, onArchive, confirm = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleDelete = async () => {
     setIsProcessing(true);
-    await deleteGoal(goal_id);
+    if (onDelete) {
+      await onDelete(goal_id);
+    }
     setIsProcessing(false);
     setIsOpen(false);
   };
 
   const handleArchive = async () => {
     setIsProcessing(true);
-    await archiveGoal(goal_id);
+    if (onArchive) {
+      await onArchive(goal_id);
+    }
     setIsProcessing(false);
     setIsOpen(false);
   };
@@ -31,8 +33,7 @@ const DeleteButton = ({ goal_id, confirm = false }) => {
     if (confirm) {
       setIsOpen(true);
     } else {
-      // Dla celów, które nie wymagają potwierdzenia, od razu archiwizujemy
-      handleArchive();
+      handleDelete();
     }
   };
 

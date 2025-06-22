@@ -18,7 +18,13 @@ import DeleteButton from "./DeleteButton";
 import SubtaskList from "./SubtasksList";
 
 const DraggableGoal = ({ goal }) => {
-  const { toggleImportant, toggleDone, updateGoalText } = useGoals();
+  const {
+    toggleImportant,
+    toggleDone,
+    updateGoalText,
+    deleteGoal,
+    archiveGoal,
+  } = useGoals();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
 
@@ -100,6 +106,8 @@ const DraggableGoal = ({ goal }) => {
           </Button>
           <DeleteButton
             goal_id={goal._id}
+            onDelete={deleteGoal}
+            onArchive={archiveGoal}
             confirm={[
               "ten miesiąc",
               "3 miesiące",

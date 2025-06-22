@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Heading,
   Container,
@@ -9,7 +8,10 @@ import {
   Button,
   Icon,
   SimpleGrid,
+  Dialog,
+  Input,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import {
   DndContext,
   useSensors,
@@ -26,32 +28,14 @@ import {
 } from "@dnd-kit/sortable";
 import { FaPlus } from "react-icons/fa";
 import ThreeLevelGoalCard from "@/components/ThreeLevelGoal/ThreeLevelGoalCard";
+import { useThreeLevelGoals } from "@/context/ThreeLevelGoalsContext";
+import { Field } from "@/components/ui/field";
 
 const TrzyPoziomyPage = () => {
-  const [goals, setGoals] = useState([
-    {
-      _id: "1",
-      text: "Nauczyć się grać na gitarze",
-      important: true,
-      levels: [
-        { level: 1, text: "Podstawowe akordy", done: true },
-        { level: 2, text: "Proste piosenki", done: false },
-        { level: 3, text: "Pierwszy koncert dla znajomych", done: false },
-      ],
-    },
-    {
-      _id: "2",
-      text: "Przebiec maraton",
-      important: false,
-      levels: [
-        { level: 1, text: "Bieg na 5km", done: false },
-        { level: 2, text: "Bieg na 10km", done: false },
-        { level: 3, text: "Półmaraton", done: false },
-      ],
-    },
-  ]);
-  const loading = false;
-  const addGoal = () => alert("Logika dodawania nowego celu (np. przez modal)");
+  const { goals, loading, addGoal, updateGoalsOrder, setGoals } =
+    useThreeLevelGoals();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newGoalText, setNewGoalText] = useState("");
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -62,11 +46,22 @@ const TrzyPoziomyPage = () => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-
     const oldIndex = goals.findIndex((goal) => goal._id === active.id);
     const newIndex = goals.findIndex((goal) => goal._id === over.id);
+    const reorderedGoals = arrayMove(goals, oldIndex, newIndex);
+    updateGoalsOrder(reorderedGoals);
+  };
 
-    setGoals((goals) => arrayMove(goals, oldIndex, newIndex));
+  const handleAddGoal = () => {
+    if (!newGoalText.trim()) return;
+    addGoal({ text: newGoalText, date_finish: new Date() });
+    setNewGoalText("");
+    setIsDialogOpen(false);
+  };
+
+  const handleCloseDialog = () => {
+    setNewGoalText("");
+    setIsDialogOpen(false);
   };
 
   return (
@@ -78,11 +73,49 @@ const TrzyPoziomyPage = () => {
         <Button
           leftIcon={<Icon as={FaPlus} />}
           colorScheme="red"
-          onClick={addGoal}
+          onClick={() => setIsDialogOpen(true)}
         >
           Dodaj Cel
         </Button>
       </Flex>
+
+      <Dialog.Root
+        open={isDialogOpen}
+        onOpenChange={(e) => setIsDialogOpen(e.open)}
+        isCentered
+      >
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content bg="gray.800" color="white" maxW="sm">
+            <Dialog.Header>
+              <Dialog.Title>Dodaj nowy cel główny</Dialog.Title>
+            </Dialog.Header>
+            <Dialog.CloseTrigger position="absolute" top="2" right="2" asChild>
+              <Button variant="ghost" onClick={handleCloseDialog}>
+                x
+              </Button>
+            </Dialog.CloseTrigger>
+            <Dialog.Body>
+              <Field label="Nazwa celu">
+                <Input
+                  placeholder="Np. Przebiec maraton"
+                  value={newGoalText}
+                  onChange={(e) => setNewGoalText(e.target.value)}
+                  focusBorderColor="red.500"
+                />
+              </Field>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button variant="ghost" mr={3} onClick={handleCloseDialog}>
+                Anuluj
+              </Button>
+              <Button colorScheme="red" onClick={handleAddGoal}>
+                Stwórz
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
 
       {loading ? (
         <Flex justify="center" align="center" h="50vh">
