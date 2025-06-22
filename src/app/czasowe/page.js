@@ -32,9 +32,7 @@ const CzasowePage = () => {
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
               <TimeGoalCard
                 key={type}
-                title={
-                  type === "3 miesiące" ? type + " (czerwiec-sierpień)" : type
-                }
+                title={type}
                 goals={getGoalsByType(type)}
               />
             ))}
