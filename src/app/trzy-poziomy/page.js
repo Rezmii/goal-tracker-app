@@ -10,6 +10,8 @@ import {
   SimpleGrid,
   Dialog,
   Input,
+  VStack,
+  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -26,16 +28,23 @@ import {
   SortableContext,
   arrayMove,
 } from "@dnd-kit/sortable";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 import ThreeLevelGoalCard from "@/components/ThreeLevelGoal/ThreeLevelGoalCard";
 import { useThreeLevelGoals } from "@/context/ThreeLevelGoalsContext";
 import { Field } from "@/components/ui/field";
+
+const initialFormState = {
+  text: "",
+  level1: "",
+  level2: "",
+  level3: "",
+};
 
 const TrzyPoziomyPage = () => {
   const { goals, loading, addGoal, updateGoalsOrder, setGoals } =
     useThreeLevelGoals();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newGoalText, setNewGoalText] = useState("");
+  const [newGoalData, setNewGoalData] = useState(initialFormState);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -52,17 +61,33 @@ const TrzyPoziomyPage = () => {
     updateGoalsOrder(reorderedGoals);
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewGoalData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleAddGoal = () => {
-    if (!newGoalText.trim()) return;
-    addGoal({ text: newGoalText, date_finish: new Date() });
-    setNewGoalText("");
-    setIsDialogOpen(false);
+    if (!newGoalData.text.trim()) return;
+
+    const goalPayload = {
+      text: newGoalData.text,
+      levels: [
+        { level: 1, text: newGoalData.level1 || "Poziom 1" },
+        { level: 2, text: newGoalData.level2 || "Poziom 2" },
+        { level: 3, text: newGoalData.level3 || "Poziom 3" },
+      ],
+    };
+
+    addGoal(goalPayload);
+    handleCloseDialog();
   };
 
   const handleCloseDialog = () => {
-    setNewGoalText("");
+    setNewGoalData(initialFormState);
     setIsDialogOpen(false);
   };
+
+  const isFormInvalid = !newGoalData.text.trim();
 
   return (
     <Container maxW="container.xl" p={0}>
@@ -81,36 +106,68 @@ const TrzyPoziomyPage = () => {
 
       <Dialog.Root
         open={isDialogOpen}
-        onOpenChange={(e) => setIsDialogOpen(e.open)}
+        onOpenChange={(e) => !e.open && handleCloseDialog()}
         isCentered
       >
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content bg="gray.800" color="white" maxW="sm">
+          <Dialog.Content bg="gray.800" color="white" maxW="md">
             <Dialog.Header>
-              <Dialog.Title>Dodaj nowy cel główny</Dialog.Title>
+              <Dialog.Title>Stwórz Nowy Cel 3-Poziomowy</Dialog.Title>
             </Dialog.Header>
-            <Dialog.CloseTrigger position="absolute" top="2" right="2" asChild>
-              <Button variant="ghost" onClick={handleCloseDialog}>
-                x
+            <Dialog.CloseTrigger position="absolute" top="3" right="3" asChild>
+              <Button variant="ghost" size="sm" onClick={handleCloseDialog}>
+                <Icon as={FaTimes} />
               </Button>
             </Dialog.CloseTrigger>
             <Dialog.Body>
-              <Field label="Nazwa celu">
-                <Input
-                  placeholder="Np. Przebiec maraton"
-                  value={newGoalText}
-                  onChange={(e) => setNewGoalText(e.target.value)}
-                  focusBorderColor="red.500"
-                />
-              </Field>
+              <VStack spacing={4} align="stretch">
+                <Field label="Cel Główny">
+                  <Input
+                    name="text"
+                    variant="subtle"
+                    value={newGoalData.text}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+
+                <Field label="Poziom 1">
+                  <Input
+                    name="level1"
+                    variant="subtle"
+                    value={newGoalData.level1}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field label="Poziom 2">
+                  <Input
+                    name="level2"
+                    variant="subtle"
+                    value={newGoalData.level2}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+                <Field label="Poziom 3">
+                  <Input
+                    name="level3"
+                    variant="subtle"
+                    value={newGoalData.level3}
+                    onChange={handleInputChange}
+                  />
+                </Field>
+              </VStack>
             </Dialog.Body>
             <Dialog.Footer>
               <Button variant="ghost" mr={3} onClick={handleCloseDialog}>
                 Anuluj
               </Button>
-              <Button colorScheme="red" onClick={handleAddGoal}>
-                Stwórz
+              {/* ZMIANA: Przycisk jest nieaktywny, jeśli główny cel jest pusty */}
+              <Button
+                colorScheme="red"
+                onClick={handleAddGoal}
+                isDisabled={isFormInvalid}
+              >
+                Stwórz Cel
               </Button>
             </Dialog.Footer>
           </Dialog.Content>

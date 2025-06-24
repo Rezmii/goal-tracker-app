@@ -30,7 +30,7 @@ const CelTrzyPoziomySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  date_finish: { type: Date, required: true },
+  date_finish: { type: Date },
   order: {
     type: Number,
     default: 0,

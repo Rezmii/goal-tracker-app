@@ -20,14 +20,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const nowyCel = new CelTrzyPoziomy({
-      ...body,
-      levels: [
-        { level: 1, text: "Poziom 1", done: false },
-        { level: 2, text: "Poziom 2", done: false },
-        { level: 3, text: "Poziom 3", done: false },
-      ],
-    });
+    const nowyCel = new CelTrzyPoziomy(body);
 
     await nowyCel.save();
     return NextResponse.json(nowyCel, { status: 201 });
