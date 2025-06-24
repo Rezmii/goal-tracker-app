@@ -20,7 +20,15 @@ export default function RootLayout({ children }) {
                   <Sidebar />
                   <Box flex="1" display="flex" flexDirection="column">
                     <Topbar />
-                    <Box flex="1" bg="gray.900" color="white" ml="250px" p={8}>
+
+                    <Box
+                      flex="1"
+                      bg="gray.900"
+                      color="white"
+                      ml={{ base: 0, lg: "250px" }}
+                      p={8}
+                      mt="60px"
+                    >
                       {children}
                     </Box>
                   </Box>

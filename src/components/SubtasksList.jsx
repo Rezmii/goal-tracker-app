@@ -23,7 +23,7 @@ const SubtaskList = ({ goal, showForm, onSubtaskAdded }) => {
   };
 
   return (
-    <VStack align="start" mt={4} pl={8} spacing={1}>
+    <VStack align="start" pl={3}>
       {goal.subtasks?.map((subtask, idx) => (
         <Subtask key={idx} subtask={subtask} index={idx} goalId={goal._id} />
       ))}

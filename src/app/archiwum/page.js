@@ -4,7 +4,6 @@
 
 import {
   Container,
-  Heading,
   Flex,
   Box,
   Text,
@@ -19,19 +18,7 @@ const ArchiwumPage = () => {
   const { archiveGoals, loadingArchive } = useArchiveGoals();
 
   return (
-    // ZMIANA: Ujednolicony kontener
     <Container maxW="container.xl" p={0}>
-      {/* ZMIANA: Nagłówek dopasowany do reszty aplikacji */}
-      <Heading
-        size="2xl"
-        mb={8}
-        textAlign="left"
-        color="white"
-        fontWeight="bold"
-      >
-        Archiwum Celów
-      </Heading>
-
       {loadingArchive ? (
         <Flex justify="center" align="center" h="50vh">
           <Spinner size="xl" color="red.500" />

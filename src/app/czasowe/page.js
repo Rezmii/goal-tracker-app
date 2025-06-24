@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Heading, Container, Flex, Spinner } from "@chakra-ui/react";
+import { Container, Flex, Spinner } from "@chakra-ui/react";
 import { useGoals } from "@/context/GoalsContext";
 import TimeGoalCard from "@/components/TimeGoal/TimeGoalCard";
 
@@ -12,23 +12,14 @@ const CzasowePage = () => {
 
   return (
     <Container maxW="container.xl" p={0}>
-      <Heading
-        size="2xl"
-        mb={8}
-        textAlign="left"
-        color="white"
-        fontWeight="bold"
-      >
-        Cele Czasowe
-      </Heading>
-
       {loading ? (
         <Flex justify="center" align="center" h="50vh">
           <Spinner size="xl" color="red.500" />
         </Flex>
       ) : (
         <Flex direction="column" gap={8}>
-          <Flex gap={6}>
+          {/* ZMIANA: Dodano responsywną właściwość `direction` */}
+          <Flex gap={6} direction={{ base: "column", lg: "row" }}>
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
               <TimeGoalCard
                 key={type}
@@ -37,7 +28,8 @@ const CzasowePage = () => {
               />
             ))}
           </Flex>
-          <Flex gap={6}>
+          {/* ZMIANA: Dodano responsywną właściwość `direction` */}
+          <Flex gap={6} direction={{ base: "column", lg: "row" }}>
             {["ten rok", "3 lata"].map((type) => (
               <TimeGoalCard
                 key={type}

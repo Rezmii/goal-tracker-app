@@ -18,8 +18,8 @@ const Sidebar = () => {
 
   const menuItems = [
     { label: "Wszystkie", icon: FaThList, path: "/wszystkie" },
-    { label: "Czasowe", icon: FaClock, path: "/czasowe" },
-    { label: "3 poziomy", icon: FaLayerGroup, path: "/trzy-poziomy" },
+    { label: "Cele Czasowe", icon: FaClock, path: "/czasowe" },
+    { label: "Cele 3-poziomowe", icon: FaLayerGroup, path: "/trzy-poziomy" },
     { label: "Ogólne", icon: FaClipboardList, path: "/ogolne" },
     { label: "Archiwum", icon: FaArchive, path: "/archiwum" },
   ];
@@ -34,6 +34,7 @@ const Sidebar = () => {
       position="fixed"
       borderRight="1px solid"
       borderColor="gray.700"
+      display={{ base: "none", lg: "block" }}
     >
       <Text
         fontSize="2xl"
@@ -56,11 +57,10 @@ const Sidebar = () => {
                 p={6}
                 variant="ghost"
                 fontSize="md"
-                // ZMIANA: Aktywny link ma teraz czerwone tło
                 bg={isActive ? "red.400" : "transparent"}
                 color={isActive ? "white" : "gray.400"}
                 _hover={{
-                  bg: isActive ? "red.400" : "gray.800",
+                  bg: isActive ? "red.500" : "gray.800",
                   color: "white",
                 }}
               >

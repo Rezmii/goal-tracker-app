@@ -11,15 +11,14 @@ import SubtaskDeleteButton from "./SubtaskDeleteButton";
 
 const Subtask = ({ subtask, goalId, index }) => {
   const { toggleSubtaskDone } = useGoals();
-  // ZMIANA: Dodajemy stan do śledzenia najechania myszką
+
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <HStack
       w="full"
       justifyContent="space-between"
-      px={2}
-      py={1}
+      px={3}
       borderRadius="md"
       _hover={{ bg: "whiteAlpha.100" }}
       // ZMIANA: Używamy zdarzeń onMouseEnter/onMouseLeave do zmiany stanu

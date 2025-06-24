@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Heading,
   Container,
   Flex,
   Spinner,
@@ -11,7 +10,6 @@ import {
   Dialog,
   Input,
   VStack,
-  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -91,10 +89,7 @@ const TrzyPoziomyPage = () => {
 
   return (
     <Container maxW="container.xl" p={0}>
-      <Flex justifyContent="space-between" alignItems="center" mb={8}>
-        <Heading size="2xl" color="white" fontWeight="bold">
-          Cele 3-Poziomowe
-        </Heading>
+      <Flex justifyContent="flex-end" alignItems="center" mb={8}>
         <Button
           leftIcon={<Icon as={FaPlus} />}
           colorScheme="red"
