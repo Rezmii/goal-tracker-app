@@ -9,6 +9,7 @@ import {
   FaRegStar,
   FaRegCheckCircle,
   FaRegCircle,
+  FaTasks,
 } from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 import { useGoals } from "@/context/GoalsContext";
@@ -29,6 +30,11 @@ const DraggableGoal = ({ goal }) => {
     useSortable({ id: goal._id });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [showSubtaskForm, setShowSubtaskForm] = useState(false);
+
+  const handleSubtaskAdded = () => {
+    setShowSubtaskForm(false);
+  };
 
   return (
     <Box
@@ -91,6 +97,20 @@ const DraggableGoal = ({ goal }) => {
         </HStack>
         <Flex align="center" gap={1}>
           <Button
+            aria-label="Pokaż/ukryj podpunkty"
+            size="xs"
+            variant="ghost"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowSubtaskForm(!showSubtaskForm);
+            }}
+            data-dndkit-no-drag
+            color="gray.400"
+            _hover={{ color: "white", bg: "gray.600" }}
+          >
+            <FaTasks />
+          </Button>
+          <Button
             aria-label="Oznacz jako ważne"
             size="xs"
             variant="ghost"
@@ -118,7 +138,11 @@ const DraggableGoal = ({ goal }) => {
         </Flex>
       </Flex>
 
-      <SubtaskList goal={goal} />
+      <SubtaskList
+        goal={goal}
+        showForm={showSubtaskForm}
+        onSubtaskAdded={handleSubtaskAdded}
+      />
     </Box>
   );
 };
