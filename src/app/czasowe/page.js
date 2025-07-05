@@ -5,10 +5,29 @@
 import { Container, Flex, Spinner } from "@chakra-ui/react";
 import { useGoals } from "@/context/GoalsContext";
 import TimeGoalCard from "@/components/TimeGoal/TimeGoalCard";
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
+import { useMemo } from "react";
 
 const CzasowePage = () => {
   const { goals, loading } = useGoals();
   const getGoalsByType = (type) => goals.filter((goal) => goal.type === type);
+
+  const formattedGoalsForCopy = useMemo(() => {
+    const groupedGoals = goals.reduce((acc, goal) => {
+      const { type, text, important, done, subtasks } = goal;
+      if (!acc[type]) {
+        acc[type] = [];
+      }
+      acc[type].push({
+        cel: text,
+        wazny: important,
+        ukonczony: done,
+        podpunkty: subtasks.map((s) => ({ tresc: s.text, ukonczony: s.done })),
+      });
+      return acc;
+    }, {});
+    return groupedGoals;
+  }, [goals]);
 
   return (
     <Container maxW="container.xl" p={0}>
@@ -40,6 +59,7 @@ const CzasowePage = () => {
           </Flex>
         </Flex>
       )}
+      {!loading && <CopyToClipboardButton dataToCopy={formattedGoalsForCopy} />}
     </Container>
   );
 };

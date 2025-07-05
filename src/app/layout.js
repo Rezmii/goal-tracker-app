@@ -7,6 +7,7 @@ import Topbar from "@/components/Topbar";
 import { GoalsProvider } from "@/context/GoalsContext";
 import { ArchiveGoalsProvider } from "@/context/ArchiveGoalsContext";
 import { ThreeLevelGoalsProvider } from "@/context/ThreeLevelGoalsContext";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({ children }) {
   return (
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
                     </Box>
                   </Box>
                 </Flex>
+                <Toaster />
               </ThreeLevelGoalsProvider>
             </ArchiveGoalsProvider>
           </GoalsProvider>

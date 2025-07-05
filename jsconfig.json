@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "jsx": "preserve"
   }
 }

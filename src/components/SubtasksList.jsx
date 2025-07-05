@@ -41,6 +41,7 @@ const SubtaskList = ({ goal, showForm, onSubtaskAdded }) => {
             _hover={{ bg: "gray.800" }}
             focusBorderColor="red.500"
             autoFocus
+            onKeyDown={(e) => e.stopPropagation()}
           />
           <Button
             size="xs"
