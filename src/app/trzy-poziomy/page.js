@@ -11,7 +11,7 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   DndContext,
   useSensors,
@@ -30,6 +30,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import ThreeLevelGoalCard from "@/components/ThreeLevelGoal/ThreeLevelGoalCard";
 import { useThreeLevelGoals } from "@/context/ThreeLevelGoalsContext";
 import { Field } from "@/components/ui/field";
+import CopyToClipboardButton from "@/components/CopyToClipboardButton";
 
 const initialFormState = {
   text: "",
@@ -58,6 +59,18 @@ const TrzyPoziomyPage = () => {
     const reorderedGoals = arrayMove(goals, oldIndex, newIndex);
     updateGoalsOrder(reorderedGoals);
   };
+
+  const formattedGoalsForCopy = useMemo(() => {
+    return goals.map((goal) => ({
+      cel_glowny: goal.text,
+      wazny: goal.important,
+      poziomy: goal.levels.map((level) => ({
+        poziom: level.level,
+        opis: level.text,
+        ukonczony: level.done,
+      })),
+    }));
+  }, [goals]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +101,7 @@ const TrzyPoziomyPage = () => {
   const isFormInvalid = !newGoalData.text.trim();
 
   return (
-    <Container maxW="container.xl" p={0}>
+    <Container maxW="container.xl" p={0} position="relative">
       <Flex justifyContent="flex-end" alignItems="center" mb={8}>
         <Button
           leftIcon={<Icon as={FaPlus} />}
@@ -187,6 +200,9 @@ const TrzyPoziomyPage = () => {
             </SimpleGrid>
           </SortableContext>
         </DndContext>
+      )}
+      {!loading && goals.length > 0 && (
+        <CopyToClipboardButton dataToCopy={formattedGoalsForCopy} />
       )}
     </Container>
   );
