@@ -114,6 +114,7 @@ const OgolneGoalCard = ({ category, goals }) => {
             goal_id={category._id}
             onDelete={() => deleteCategory(category._id, category.name)}
             confirm
+            enableArchive={false}
           />
         </HStack>
       </Flex>

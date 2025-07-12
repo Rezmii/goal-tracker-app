@@ -181,6 +181,15 @@ export const OgolneGoalsProvider = ({ children }) => {
     }
   };
 
+  const archiveGoal = async (goalId) => {
+    try {
+      await fetch(`/api/celeOgolne/${goalId}/archive`, { method: "POST" });
+      setGoals((prev) => prev.filter((goal) => goal._id !== goalId));
+    } catch (error) {
+      console.error("Błąd archiwizacji celu:", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -203,6 +212,7 @@ export const OgolneGoalsProvider = ({ children }) => {
         addSubtask,
         deleteSubtask,
         toggleSubtaskDone,
+        archiveGoal,
       }}
     >
       {children}

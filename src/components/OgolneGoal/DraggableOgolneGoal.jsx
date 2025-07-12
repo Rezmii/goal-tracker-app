@@ -17,7 +17,7 @@ import DeleteButton from "../DeleteButton";
 import SubtaskListOgolne from "./SubtaskListOgolne";
 
 const DraggableOgolneGoal = ({ goal }) => {
-  const { updateGoalProperty, deleteGoal } = useOgolneGoals();
+  const { updateGoalProperty, deleteGoal, archiveGoal } = useOgolneGoals();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
   const [isEditing, setIsEditing] = useState(false);
@@ -110,7 +110,12 @@ const DraggableOgolneGoal = ({ goal }) => {
           >
             {goal.important ? <FaStar /> : <FaRegStar />}
           </Button>
-          <DeleteButton goal_id={goal._id} onDelete={deleteGoal} confirm />
+          <DeleteButton
+            goal_id={goal._id}
+            onDelete={deleteGoal}
+            onArchive={archiveGoal}
+            confirm
+          />
         </Flex>
       </Flex>
       <SubtaskListOgolne

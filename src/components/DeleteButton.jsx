@@ -6,7 +6,13 @@ import React, { useState } from "react";
 import { Button, Dialog, VStack, Text } from "@chakra-ui/react";
 import { FaTrash, FaArchive } from "react-icons/fa";
 
-const DeleteButton = ({ goal_id, onDelete, onArchive, confirm = false }) => {
+const DeleteButton = ({
+  goal_id,
+  onDelete,
+  onArchive,
+  confirm = false,
+  enableArchive = true,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -70,26 +76,34 @@ const DeleteButton = ({ goal_id, onDelete, onArchive, confirm = false }) => {
             </Dialog.Header>
             {/* ZMIANA: Dodatkowe informacje dla użytkownika */}
             <Dialog.Body>
-              <Text color="gray.300">
-                Możesz trwale usunąć ten cel lub przenieść go do archiwum, aby
-                zachować go w historii.
-              </Text>
+              {enableArchive ? (
+                <Text color="gray.300">
+                  Możesz trwale usunąć ten cel lub przenieść go do archiwum, aby
+                  zachować go w historii.
+                </Text>
+              ) : (
+                <Text color="gray.300">
+                  Czy na pewno chcesz usunąć tą kategorię?
+                </Text>
+              )}
             </Dialog.Body>
             <Dialog.Footer>
               <Button variant="ghost" onClick={() => setIsOpen(false)}>
                 Anuluj
               </Button>
-              {/* ZMIANA: Lepsze style przycisków akcji */}
-              <Button
-                variant="outline"
-                leftIcon={<FaArchive />}
-                onClick={handleArchive}
-                ml={3}
-                isLoading={isProcessing}
-                _hover={{ bg: "whiteAlpha.200" }}
-              >
-                Archiwizuj
-              </Button>
+              {enableArchive && (
+                <Button
+                  variant="outline"
+                  leftIcon={<FaArchive />}
+                  onClick={handleArchive}
+                  ml={3}
+                  isLoading={isProcessing}
+                  _hover={{ bg: "whiteAlpha.200" }}
+                >
+                  Archiwizuj
+                </Button>
+              )}
+
               <Button
                 colorScheme="red"
                 onClick={handleDelete}
