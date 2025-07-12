@@ -1,6 +1,5 @@
 "use client";
 
-// ZMIANA: Dodano HStack, Icon oraz ikonę FaGripVertical
 import {
   Box,
   Heading,

@@ -13,12 +13,27 @@ import { useOgolneGoals } from "@/context/OgolneGoalsContext";
 import OgolneGoalCard from "@/components/OgolneGoal/OgolneGoalCard";
 import { useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import {
+  DndContext,
+  useSensors,
+  useSensor,
+  MouseSensor,
+  TouchSensor,
+  KeyboardSensor,
+  closestCenter,
+} from "@dnd-kit/core";
+import {
+  sortableKeyboardCoordinates,
+  SortableContext,
+  arrayMove,
+} from "@dnd-kit/sortable";
 
 const OgolnePage = () => {
-  const { goals, loading, addGoal } = useOgolneGoals();
-  const [newCategory, setNewCategory] = useState("");
+  const { goals, categories, loading, addCategory, reorderCategories } =
+    useOgolneGoals();
+  const [newCategoryName, setNewCategoryName] = useState("");
 
-  const categories = useMemo(() => {
+  const goalsByCategory = useMemo(() => {
     return goals.reduce((acc, goal) => {
       const { category } = goal;
       if (!acc[category]) {
@@ -29,12 +44,25 @@ const OgolnePage = () => {
     }, {});
   }, [goals]);
 
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = categories.findIndex((c) => c.name === active.id);
+    const newIndex = categories.findIndex((c) => c.name === over.id);
+    const reordered = arrayMove(categories, oldIndex, newIndex);
+    reorderCategories(reordered);
+  };
+
   const handleAddCategory = () => {
-    if (!newCategory.trim()) return;
-    // Logika dodawania nowej, pustej kategorii (karty)
-    // Na razie możemy po prostu dodać cel do nowej kategorii
-    addGoal({ text: "Nowy cel", category: newCategory });
-    setNewCategory("");
+    if (!newCategoryName.trim()) return;
+    addCategory(newCategoryName);
+    setNewCategoryName("");
   };
 
   return (
@@ -42,8 +70,8 @@ const OgolnePage = () => {
       <Flex justifyContent="flex-end" alignItems="center" mb={8} gap={4}>
         <Input
           placeholder="Nazwa nowej kategorii..."
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
+          value={newCategoryName}
+          onChange={(e) => setNewCategoryName(e.target.value)}
           variant="solid"
           maxW="300px"
         />
@@ -51,7 +79,7 @@ const OgolnePage = () => {
           leftIcon={<Icon as={FaPlus} />}
           colorScheme="red"
           onClick={handleAddCategory}
-          isDisabled={!newCategory.trim()}
+          isDisabled={!newCategoryName.trim()}
         >
           Dodaj Kategorię
         </Button>
@@ -62,15 +90,23 @@ const OgolnePage = () => {
           <Spinner size="xl" color="red.500" />
         </Flex>
       ) : (
-        <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} gap={6}>
-          {Object.entries(categories).map(([category, goalsInCategory]) => (
-            <OgolneGoalCard
-              key={category}
-              category={category}
-              goals={goalsInCategory}
-            />
-          ))}
-        </SimpleGrid>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={categories.map((c) => c.name)}>
+            <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} gap={6}>
+              {categories.map((category) => (
+                <OgolneGoalCard
+                  key={category.name}
+                  category={category}
+                  goals={goalsByCategory[category.name] || []}
+                />
+              ))}
+            </SimpleGrid>
+          </SortableContext>
+        </DndContext>
       )}
     </Container>
   );

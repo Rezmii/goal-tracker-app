@@ -6,17 +6,84 @@ const OgolneGoalsContext = createContext();
 
 export const OgolneGoalsProvider = ({ children }) => {
   const [goals, setGoals] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchGoals = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch("/api/celeOgolne");
-      const data = await response.json();
-      setGoals(data);
+      setLoading(true);
+      const [goalsRes, categoriesRes] = await Promise.all([
+        fetch("/api/celeOgolne"),
+        fetch("/api/ogolneKategorie"),
+      ]);
+      const goalsData = await goalsRes.json();
+      const categoriesData = await categoriesRes.json();
+      setGoals(goalsData);
+      setCategories(categoriesData);
     } catch (error) {
-      console.error("Błąd pobierania celów ogólnych:", error);
+      console.error("Błąd pobierania danych:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const addCategory = async (categoryName) => {
+    try {
+      const response = await fetch("/api/ogolneKategorie", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: categoryName }),
+      });
+      const newCategory = await response.json();
+      setCategories((prev) => [...prev, newCategory]);
+    } catch (error) {
+      console.error("Błąd dodawania kategorii:", error);
+    }
+  };
+
+  const reorderCategories = async (reorderedCategories) => {
+    setCategories(reorderedCategories);
+    try {
+      await fetch("/api/ogolneKategorie/reorder", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderedCategories: reorderedCategories.map((c) => c.name),
+        }),
+      });
+    } catch (error) {
+      console.error("Błąd zapisu kolejności:", error);
+      fetchData();
+    }
+  };
+
+  const deleteCategory = async (categoryId, categoryName) => {
+    try {
+      await fetch(`/api/ogolneKategorie/${categoryId}`, { method: "DELETE" });
+
+      setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+
+      setGoals((prev) => prev.filter((goal) => goal.category !== categoryName));
+    } catch (error) {
+      console.error("Błąd usuwania kategorii:", error);
+    }
+  };
+
+  const toggleCategoryImportant = async (categoryId, currentStatus) => {
+    setCategories((prev) =>
+      prev.map((c) =>
+        c._id === categoryId ? { ...c, important: !currentStatus } : c
+      )
+    );
+    try {
+      await fetch(`/api/ogolneKategorie/${categoryId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ important: !currentStatus }),
+      });
+    } catch (error) {
+      console.error("Błąd aktualizacji ważności kategorii:", error);
+      fetchData();
     }
   };
 
@@ -55,7 +122,7 @@ export const OgolneGoalsProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Błąd aktualizacji celu:", error);
-      fetchGoals();
+      fetchData();
     }
   };
 
@@ -70,7 +137,7 @@ export const OgolneGoalsProvider = ({ children }) => {
       });
     } catch (error) {
       console.error("Błąd aktualizacji kolejności:", error);
-      fetchGoals();
+      fetchData();
     }
   };
 
@@ -95,7 +162,7 @@ export const OgolneGoalsProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index: subtaskIndex }),
       });
-      fetchGoals();
+      fetchData();
     } catch (error) {
       console.error("Błąd usuwania podpunktu:", error);
     }
@@ -108,23 +175,28 @@ export const OgolneGoalsProvider = ({ children }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ index: subtaskIndex, done: !currentStatus }),
       });
-      fetchGoals();
+      fetchData();
     } catch (error) {
       console.error("Błąd oznaczania podpunktu:", error);
     }
   };
 
   useEffect(() => {
-    fetchGoals();
+    fetchData();
   }, []);
 
   return (
     <OgolneGoalsContext.Provider
       value={{
         goals,
+        categories,
         loading,
         addGoal,
-        fetchGoals,
+        addCategory,
+        reorderCategories,
+        deleteCategory,
+        toggleCategoryImportant,
+        fetchData,
         deleteGoal,
         updateGoalProperty,
         updateGoalsOrder,
