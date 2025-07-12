@@ -2,26 +2,22 @@
 
 "use client";
 
-// ZMIANA: Importujemy useState
 import { useState } from "react";
-import { Text, HStack, Button, Box } from "@chakra-ui/react";
-import { useGoals } from "@/context/GoalsContext";
+import { Text, HStack, Button } from "@chakra-ui/react";
 import { FaRegCheckCircle, FaRegCircle } from "react-icons/fa";
 import SubtaskDeleteButton from "./SubtaskDeleteButton";
 
-const Subtask = ({ subtask, goalId, index }) => {
-  const { toggleSubtaskDone } = useGoals();
-
+const Subtask = ({ subtask, onToggleDone, onDelete }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <HStack
       w="full"
       justifyContent="space-between"
-      px={3}
+      px={2}
+      py={1}
       borderRadius="md"
       _hover={{ bg: "whiteAlpha.100" }}
-      // ZMIANA: Używamy zdarzeń onMouseEnter/onMouseLeave do zmiany stanu
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -30,8 +26,8 @@ const Subtask = ({ subtask, goalId, index }) => {
           aria-label="Zaznacz jako ukończone"
           size="xs"
           variant="ghost"
-          onClick={() => toggleSubtaskDone(goalId, index, subtask.done)}
           data-dndkit-no-drag
+          onClick={onToggleDone}
           color={subtask.done ? "red.400" : "gray.400"}
           _hover={{ bg: "gray.500", color: "red.300" }}
         >
@@ -47,12 +43,7 @@ const Subtask = ({ subtask, goalId, index }) => {
         </Text>
       </HStack>
 
-      {/* ZMIANA: Przekazujemy stan jako prop `isVisible` */}
-      <SubtaskDeleteButton
-        goalId={goalId}
-        index={index}
-        isVisible={isHovered}
-      />
+      <SubtaskDeleteButton isVisible={isHovered} onDelete={onDelete} />
     </HStack>
   );
 };

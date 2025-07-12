@@ -7,6 +7,7 @@ import Topbar from "@/components/Topbar";
 import { GoalsProvider } from "@/context/GoalsContext";
 import { ArchiveGoalsProvider } from "@/context/ArchiveGoalsContext";
 import { ThreeLevelGoalsProvider } from "@/context/ThreeLevelGoalsContext";
+import { OgolneGoalsProvider } from "@/context/OgolneGoalsContext";
 import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({ children }) {
@@ -17,24 +18,26 @@ export default function RootLayout({ children }) {
           <GoalsProvider>
             <ArchiveGoalsProvider>
               <ThreeLevelGoalsProvider>
-                <Flex h="100vh">
-                  <Sidebar />
-                  <Box flex="1" display="flex" flexDirection="column">
-                    <Topbar />
+                <OgolneGoalsProvider>
+                  <Flex h="100vh">
+                    <Sidebar />
+                    <Box flex="1" display="flex" flexDirection="column">
+                      <Topbar />
 
-                    <Box
-                      flex="1"
-                      bg="gray.900"
-                      color="white"
-                      ml={{ base: 0, lg: "250px" }}
-                      p={8}
-                      mt="60px"
-                    >
-                      {children}
+                      <Box
+                        flex="1"
+                        bg="gray.900"
+                        color="white"
+                        ml={{ base: 0, lg: "250px" }}
+                        p={8}
+                        mt="60px"
+                      >
+                        {children}
+                      </Box>
                     </Box>
-                  </Box>
-                </Flex>
-                <Toaster />
+                  </Flex>
+                  <Toaster />
+                </OgolneGoalsProvider>
               </ThreeLevelGoalsProvider>
             </ArchiveGoalsProvider>
           </GoalsProvider>

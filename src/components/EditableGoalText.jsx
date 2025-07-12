@@ -37,10 +37,9 @@ const EditableGoalText = ({ initialText, onSave, onCancel }) => {
         onKeyDown={handleKeyDown}
         bg="gray.900"
         borderColor="gray.600"
-        focusBorderColor="red.500"
         _hover={{ borderColor: "gray.500" }}
       />
-      {/* ZMIANA: Użycie standardowych przycisków zamiast IconButton */}
+
       <Button
         size="sm"
         aria-label="Zapisz zmiany"

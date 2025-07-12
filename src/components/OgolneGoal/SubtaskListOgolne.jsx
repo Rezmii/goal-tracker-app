@@ -1,15 +1,17 @@
+// src/components/OgolneGoal/SubtaskListOgolne.jsx
+
 "use client";
 
 import { VStack, HStack, Input, Button, Icon } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import Subtask from "./Subtask";
-import { useGoals } from "@/context/GoalsContext";
+import Subtask from "../Subtask";
+import { useOgolneGoals } from "@/context/OgolneGoalsContext";
 
-const SubtaskList = ({ goal, showForm, onSubtaskAdded }) => {
+const SubtaskListOgolne = ({ goal, showForm, onSubtaskAdded }) => {
   const [newSubtask, setNewSubtask] = useState("");
 
-  const { addSubtask, deleteSubtask, toggleSubtaskDone } = useGoals();
+  const { addSubtask, deleteSubtask, toggleSubtaskDone } = useOgolneGoals();
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -55,4 +57,4 @@ const SubtaskList = ({ goal, showForm, onSubtaskAdded }) => {
   );
 };
 
-export default SubtaskList;
+export default SubtaskListOgolne;

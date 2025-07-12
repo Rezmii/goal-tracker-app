@@ -1,26 +1,18 @@
-// src/components/AddGoalInput.jsx
-
 "use client";
 
 import { useState } from "react";
 import { Box, Button, HStack, Input, VStack, Icon } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import { useGoals } from "@/context/GoalsContext";
 
-const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
-  const { addGoal } = useGoals();
+const AddGoalInput = ({ onAdd, isEditing, setIsEditing }) => {
   const [goalText, setGoalText] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!goalText.trim()) return;
 
-    addGoal({
-      text: capitalizeFirstLetter(goalText),
-      date_finish: new Date().toISOString(),
-      type,
-      subtasks: [],
-    });
+    onAdd(capitalizeFirstLetter(goalText));
+
     setGoalText("");
     setIsEditing(false);
   };
@@ -43,10 +35,8 @@ const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
               if (e.key === "Escape") setIsEditing(false);
             }}
             autoFocus
-            // ZMIANA: Dopasowanie inputu do nowego designu
             bg="gray.900"
             borderColor="gray.600"
-            focusBorderColor="red.500"
             _hover={{ borderColor: "gray.500" }}
           />
           <HStack w="100%" justifyContent="flex-end">
@@ -60,18 +50,12 @@ const AddGoalInput = ({ type, isEditing, setIsEditing }) => {
             >
               Anuluj
             </Button>
-            <Button
-              type="submit"
-              size="sm"
-              // ZMIANA: Użycie czerwonego akcentu
-              colorScheme="red"
-            >
+            <Button type="submit" size="sm" colorScheme="red">
               Dodaj cel
             </Button>
           </HStack>
         </VStack>
       ) : (
-        // ZMIANA: Przycisk "Dodaj cel" dopasowany do nowego stylu
         <Button
           size="sm"
           variant="ghost"

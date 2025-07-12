@@ -24,7 +24,7 @@ import { useGoals } from "@/context/GoalsContext";
 import { useState, useEffect } from "react";
 
 const TimeGoalCard = ({ title, goals }) => {
-  const { updateGoalsOrder } = useGoals();
+  const { addGoal, updateGoalsOrder } = useGoals();
   const [localGoals, setLocalGoals] = useState(goals);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -54,6 +54,15 @@ const TimeGoalCard = ({ title, goals }) => {
     const updatedGoals = arrayMove(localGoals, oldIndex, newIndex);
     setLocalGoals(updatedGoals);
     updateGoalsOrder(title, updatedGoals);
+  };
+
+  const handleAddNewGoal = (goalText) => {
+    const newGoal = {
+      text: goalText,
+      type: title,
+      date_finish: new Date(),
+    };
+    addGoal(newGoal);
   };
 
   const getDynamicTitle = (title) => {
@@ -138,7 +147,7 @@ const TimeGoalCard = ({ title, goals }) => {
         </SortableContext>
       </DndContext>
       <AddGoalInput
-        type={title}
+        onAdd={handleAddNewGoal}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
       />
