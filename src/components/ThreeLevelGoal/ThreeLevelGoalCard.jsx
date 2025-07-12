@@ -18,7 +18,7 @@ import DeleteButton from "../DeleteButton";
 import { useThreeLevelGoals } from "@/context/ThreeLevelGoalsContext";
 
 const ThreeLevelGoalCard = ({ goal }) => {
-  const { updateGoal, deleteGoal } = useThreeLevelGoals();
+  const { updateGoal, deleteGoal, archiveGoal } = useThreeLevelGoals();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: goal._id });
@@ -70,6 +70,7 @@ const ThreeLevelGoalCard = ({ goal }) => {
           <DeleteButton
             goal_id={goal._id}
             onDelete={deleteGoal}
+            onArchive={archiveGoal}
             confirm={true}
           />
         </Flex>

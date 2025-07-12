@@ -105,6 +105,19 @@ export const ThreeLevelGoalsProvider = ({ children }) => {
     fetchGoals();
   }, []);
 
+  const archiveGoal = async (goalId) => {
+    try {
+      const response = await fetch(`/api/celeTrzyPoziomy/${goalId}`, {
+        method: "POST",
+      });
+      if (!response.ok) throw new Error("Błąd archiwizacji celu");
+
+      setGoals((prevGoals) => prevGoals.filter((goal) => goal._id !== goalId));
+    } catch (error) {
+      console.error("Błąd archiwizacji celu:", error);
+    }
+  };
+
   return (
     <ThreeLevelGoalsContext.Provider
       value={{
@@ -116,6 +129,7 @@ export const ThreeLevelGoalsProvider = ({ children }) => {
         updateGoal,
         updateGoalsOrder,
         updateLevel,
+        archiveGoal,
       }}
     >
       {children}
