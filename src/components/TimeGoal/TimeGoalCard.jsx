@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, Flex, HStack, Icon } from "@chakra-ui/react";
 import {
   DndContext,
   useSensors,
@@ -22,11 +22,22 @@ import DraggableGoal from "../DraggableGoal";
 import AddGoalInput from "../AddGoalInput";
 import { useGoals } from "@/context/GoalsContext";
 import { useState, useEffect } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { FaGripVertical } from "react-icons/fa";
 
-const TimeGoalCard = ({ title, goals }) => {
+const TimeGoalCard = ({ id, title, goals, isDraggableCard = false }) => {
   const { addGoal, updateGoalsOrder } = useGoals();
   const [localGoals, setLocalGoals] = useState(goals);
   const [isEditing, setIsEditing] = useState(false);
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id, disabled: !isDraggableCard });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -44,7 +55,7 @@ const TimeGoalCard = ({ title, goals }) => {
     setLocalGoals(goals);
   }, [goals]);
 
-  const handleDragEnd = (event) => {
+  const handleInnerDragEnd = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
@@ -106,22 +117,44 @@ const TimeGoalCard = ({ title, goals }) => {
 
   return (
     // ZMIANA: Nowy, subtelniejszy wygląd karty
-    <Box flex="1" bg="gray.800" p={5} borderRadius="lg" boxShadow="md">
-      {/* ZMIANA: Uproszczony nagłówek karty, bez tła */}
-      <Heading
-        size="md"
-        mb={4}
-        color="gray.300"
-        textAlign="center"
-        fontWeight="semibold"
-        textTransform="uppercase"
-        letterSpacing="wide"
-      >
-        {displayTitle}
-      </Heading>
+    <Box
+      ref={setNodeRef}
+      style={isDraggableCard ? style : undefined}
+      flex="1"
+      bg="gray.800"
+      p={5}
+      borderRadius="lg"
+      boxShadow="md"
+    >
+      <HStack mb={4} justify="center" position="relative">
+        {isDraggableCard && (
+          <Box
+            {...attributes}
+            {...listeners}
+            cursor="grab"
+            position="absolute"
+            left="0"
+            p={2}
+          >
+            <Icon as={FaGripVertical} color="gray.600" />
+          </Box>
+        )}
+        <Heading
+          size="md"
+          mb={4}
+          color="gray.300"
+          textAlign="center"
+          fontWeight="semibold"
+          textTransform="uppercase"
+          letterSpacing="wide"
+        >
+          {displayTitle}
+        </Heading>
+      </HStack>
+
       <DndContext
         collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
+        onDragEnd={handleInnerDragEnd}
         sensors={sensors}
       >
         <SortableContext

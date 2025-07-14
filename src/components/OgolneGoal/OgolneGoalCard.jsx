@@ -26,13 +26,13 @@ import DraggableOgolneGoal from "./DraggableOgolneGoal";
 import AddGoalInput from "../AddGoalInput";
 import { useState } from "react";
 
-const OgolneGoalCard = ({ category, goals }) => {
+const OgolneGoalCard = ({ id, category, goals }) => {
   const { addGoal, updateGoalsOrder, toggleCategoryImportant, deleteCategory } =
     useOgolneGoals();
   const [isEditing, setIsEditing] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: category.name });
+    useSortable({ id: id });
 
   const style = {
     transform: CSS.Transform.toString(transform),

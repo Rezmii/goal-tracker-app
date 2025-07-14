@@ -100,6 +100,7 @@ const OgolnePage = () => {
               {categories.map((category) => (
                 <OgolneGoalCard
                   key={category.name}
+                  id={category.name}
                   category={category}
                   goals={goalsByCategory[category.name] || []}
                 />

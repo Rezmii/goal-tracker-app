@@ -42,6 +42,7 @@ const CzasowePage = () => {
             {["ten tydzień", "ten miesiąc", "3 miesiące"].map((type) => (
               <TimeGoalCard
                 key={type}
+                id={`karta-${type}`}
                 title={type}
                 goals={getGoalsByType(type)}
               />
@@ -52,6 +53,7 @@ const CzasowePage = () => {
             {["ten rok", "3 lata"].map((type) => (
               <TimeGoalCard
                 key={type}
+                id={`karta-${type}`}
                 title={type}
                 goals={getGoalsByType(type)}
               />
